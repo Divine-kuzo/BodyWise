@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { TESTIMONIALS } from "@/lib/data";
+import { RiStarFill } from "react-icons/ri";
 
 export function TestimonialsSection() {
   return (
@@ -38,7 +39,7 @@ export function TestimonialsSection() {
             </div>
             <div className="flex items-center gap-1 text-[#d6b28f]">
               {Array.from({ length: testimonial.rating }).map((_, index) => (
-                <span key={index}>★</span>
+                <RiStarFill key={index} className="h-4 w-4" aria-hidden="true" />
               ))}
             </div>
             <p className="text-sm leading-relaxed text-[#604d43]">

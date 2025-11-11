@@ -8,7 +8,7 @@ import { EducationHubSection } from "@/components/sections/education-hub";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f5ebe3] pb-16">
+    <div className="min-h-screen bg-[#f5ebe3]">
       <Navbar />
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-4 pb-20 pt-10 sm:px-6 lg:px-8">
         <HeroSection />

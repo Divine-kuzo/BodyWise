@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { SOCIAL_LINKS } from "@/lib/constants";
+import {
+  RiTwitterXLine,
+  RiInstagramLine,
+  RiYoutubeLine,
+  RiLinkedinBoxLine,
+} from "react-icons/ri";
 
 const columns = [
   {
@@ -40,6 +46,13 @@ const columns = [
   },
 ];
 
+const socialIcons = {
+  X: RiTwitterXLine,
+  Instagram: RiInstagramLine,
+  YouTube: RiYoutubeLine,
+  LinkedIn: RiLinkedinBoxLine,
+} as const;
+
 export function Footer() {
   return (
     <footer className="bg-gradient-to-r from-[#3a2218] via-[#4d2c22] to-[#3a2218] text-[#f5ebe3]">
@@ -52,15 +65,24 @@ export function Footer() {
             BodyWise Africa
           </div>
           <div className="flex items-center gap-4 text-sm text-[#f0d5b8]/80">
-            {SOCIAL_LINKS.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="transition hover:text-[#f0d5b8]"
-              >
-                {link.name}
-              </Link>
-            ))}
+            {SOCIAL_LINKS.map((link) => {
+              const Icon =
+                socialIcons[link.name as keyof typeof socialIcons];
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  aria-label={link.name}
+                  className="transition hover:text-[#f0d5b8]"
+                >
+                  {Icon ? (
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <span>{link.name}</span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </div>
         <div className="grid flex-1 gap-10 md:grid-cols-3">
