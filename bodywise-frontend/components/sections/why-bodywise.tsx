@@ -1,7 +1,12 @@
 import { WHY_BODYWISE } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/section-heading";
+import {
+  PiTargetBold,
+  PiWarningDiamondBold,
+  PiChatsCircleBold,
+} from "react-icons/pi";
 
-const iconShapes = ["⦿", "▲", "⌾"];
+const iconComponents = [PiTargetBold, PiWarningDiamondBold, PiChatsCircleBold];
 
 export function WhyBodyWiseSection() {
   return (
@@ -17,20 +22,23 @@ export function WhyBodyWiseSection() {
         className="mb-14"
       />
       <div className="grid gap-10 md:grid-cols-3">
-        {WHY_BODYWISE.map((item, index) => (
-          <div
-            key={item.title}
-            className="space-y-5 rounded-3xl bg-white p-8 shadow-[0_25px_65px_-55px_rgba(58,34,24,0.7)]"
-          >
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f0d5b8] text-lg font-semibold text-[#3a2218]">
-              {iconShapes[index]}
-            </span>
-            <h3 className="text-lg font-semibold text-[#3a2218]">
-              {item.title}
-            </h3>
-            <p className="text-sm text-[#80685b]">{item.description}</p>
-          </div>
-        ))}
+        {WHY_BODYWISE.map((item, index) => {
+          const Icon = iconComponents[index];
+          return (
+            <div
+              key={item.title}
+              className="space-y-5 rounded-3xl bg-white p-8 shadow-[0_25px_65px_-55px_rgba(58,34,24,0.7)]"
+            >
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f0d5b8] text-[#3a2218]">
+                {Icon ? <Icon className="h-6 w-6" aria-hidden="true" /> : null}
+              </span>
+              <h3 className="text-lg font-semibold text-[#3a2218]">
+                {item.title}
+              </h3>
+              <p className="text-sm text-[#80685b]">{item.description}</p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

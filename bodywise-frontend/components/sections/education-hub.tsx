@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { EDUCATION_RESOURCES, EDUCATION_TAGS } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Chip } from "@/components/ui/chip";
+import { RiArrowRightUpLine } from "react-icons/ri";
 
 export function EducationHubSection() {
   const [activeTag, setActiveTag] = useState<string>("All");
@@ -63,7 +64,8 @@ export function EducationHubSection() {
                 href={resource.href}
                 className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[#6a4a3a] transition hover:text-[#3a2218]"
               >
-                Read More →
+                Read More
+                <RiArrowRightUpLine className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
           </article>
