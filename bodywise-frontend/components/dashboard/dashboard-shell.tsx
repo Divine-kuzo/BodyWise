@@ -27,7 +27,7 @@ interface DashboardShellProps {
   navItems?: NavItem[];
 }
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   dashboard: RiDashboard3Line,
   team: RiTeamLine,
   performance: RiStackLine,
@@ -38,7 +38,7 @@ const iconMap = {
   chat: RiChatSmile3Line,
   community: RiHeartsLine,
   learn: RiBookOpenLine,
-} as const;
+};
 
 export function DashboardShell({
   title,
