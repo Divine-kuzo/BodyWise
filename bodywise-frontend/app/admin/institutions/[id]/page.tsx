@@ -13,7 +13,7 @@ export default function InstitutionDetailPage({
   params,
 }: InstitutionDetailPageProps) {
   const institution = pendingInstitutions.find(
-    (item) => item.id === params.id,
+    (item) => item.id.toString() === params.id,
   );
 
   if (!institution) {
