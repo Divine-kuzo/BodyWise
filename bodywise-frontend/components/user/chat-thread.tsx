@@ -1,108 +1,211 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef, FormEvent } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Textarea } from "@/components/chat/textarea";
 
 interface Message {
-  sender: "coach" | "user";
+  id: string;
+  role: "user" | "assistant";
   content: string;
-  time: string;
 }
 
-const initialMessages: Message[] = [
-  {
-    sender: "coach",
-    content: "Hi Amara, how are you feeling about your body awareness practice today?",
-    time: "09:05",
-  },
-  {
-    sender: "user",
-    content: "Feeling balanced! I tried the breathing ritual you shared.",
-    time: "09:06",
-  },
-  {
-    sender: "coach",
-    content: "That’s brilliant. Remember to celebrate every small shift.",
-    time: "09:06",
-  },
-];
-
 export function ChatThread() {
-  const [messages, setMessages] = useState(initialMessages);
-  const [draft, setDraft] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>("idle");
+  
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  const handleSend = () => {
-    if (!draft.trim()) return;
-    setMessages((prev) => [
-      ...prev,
-      {
-        sender: "user",
-        content: draft.trim(),
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const stop = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setStatus("idle");
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input.trim(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+    setStatus("submitted");
+    setError(null);
+
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
         }),
-      },
-    ]);
-    setDraft("");
+        signal: abortControllerRef.current.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error("No response stream");
+
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "",
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+      setStatus("streaming");
+
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: streamDone } = await reader.read();
+        done = streamDone;
+
+        if (value) {
+          const chunk = decoder.decode(value, { stream: !done });
+          assistantMessage.content += chunk;
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { ...assistantMessage };
+            return updated;
+          });
+        }
+      }
+
+      setStatus("idle");
+    } catch (err: any) {
+      if (err.name === "AbortError") {
+        console.log("Request aborted");
+      } else {
+        console.error("Chat error:", err);
+        setError("Something went wrong. Please try again.");
+        setMessages((prev) => prev.slice(0, -1));
+      }
+      setStatus("idle");
+    } finally {
+      setIsLoading(false);
+      abortControllerRef.current = null;
+    }
   };
 
   return (
-    <div className="flex h-[520px] flex-col overflow-hidden rounded-3xl border border-[#e6d8ce] bg-white shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
-      <div className="flex items-center justify-between border-b border-[#f1e3d9] px-6 py-4">
-        <div>
-          <h2 className="text-sm font-semibold text-[#3a2218]">
-            Chat with Coach Laila
-          </h2>
-          <p className="text-xs text-[#80685b]">
-            Typically responds within a few minutes
-          </p>
-        </div>
-        <span className="rounded-full bg-[#f0d5b8]/80 px-3 py-1 text-xs font-semibold text-[#6a4a3a]">
-          Live
-        </span>
-      </div>
-      <div className="flex-1 space-y-3 overflow-y-auto px-6 py-5">
-        {messages.map((message, index) => (
-          <div
-            key={`${message.content}-${index}`}
-            className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
-              message.sender === "coach"
-                ? "bg-[#523329] text-white"
-                : "ml-auto bg-[#f9f0e6] text-[#3a2218]"
-            }`}
-          >
-            <p>{message.content}</p>
-            <span
-              className={`mt-2 block text-[11px] font-semibold uppercase tracking-[0.2em] ${
-                message.sender === "coach" ? "text-white/70" : "text-[#a1897c]"
-              }`}
-            >
-              {message.time}
-            </span>
+    <div className="flex h-[calc(100vh-12rem)] flex-col bg-white">
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-3xl px-4 py-8">
+          {messages.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="mb-8">
+                <h1 className="mb-3 text-3xl font-semibold text-gray-900">
+                  BodyWise Health Coach
+                </h1>
+                <p className="text-base text-gray-600">
+                  Your private wellness companion. Messages are not saved.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-6">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                    message.role === "user"
+                      ? "bg-black text-white"
+                      : "bg-gray-100 text-gray-900"
+                  }`}
+                >
+                  {message.role === "assistant" ? (
+                    <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-gray-900 prose-pre:text-gray-100">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="text-sm leading-relaxed">{message.content}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="rounded-2xl bg-gray-100 px-4 py-3">
+                  <div className="flex items-center space-x-1">
+                    <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0ms" }} />
+                    <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "150ms" }} />
+                    <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "300ms" }} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="flex justify-center">
+                <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+                  {error}
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
           </div>
-        ))}
+        </div>
       </div>
-      <div className="border-t border-[#f1e3d9] bg-[#fdf9f6] px-6 py-4">
-        <label className="sr-only" htmlFor="chat-message">
-          Message
-        </label>
-        <textarea
-          id="chat-message"
-          rows={3}
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          placeholder="Share how you’re feeling…"
-          className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] shadow-[0_12px_40px_-28px_rgba(58,34,24,0.6)] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#f0d5b8]/80"
-        />
-        <div className="mt-3 flex justify-end">
-          <Button type="button" variant="secondary" onClick={handleSend}>
-            Send message
-          </Button>
+
+      {/* Input Area */}
+      <div className="border-t border-gray-200 bg-white">
+        <div className="mx-auto max-w-3xl px-4 py-4">
+          <form onSubmit={handleSubmit}>
+            <Textarea
+              input={input}
+              handleInputChange={(e) => setInput(e.target.value)}
+              isLoading={isLoading}
+              status={status}
+              stop={stop}
+            />
+          </form>
+          <p className="mt-2 text-center text-xs text-gray-500">
+            Messages are not saved. This is a private conversation.
+          </p>
         </div>
       </div>
     </div>
   );
 }
-
-
