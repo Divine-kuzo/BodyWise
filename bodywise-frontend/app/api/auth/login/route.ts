@@ -34,11 +34,23 @@ export async function POST(request: Request) {
       console.error('Failed to log activity:', error);
     }
     
-    return NextResponse.json({
+    // Create response with httpOnly cookie
+    const response = NextResponse.json({
       success: true,
       token: result.token,
       user: result.user,
     });
+    
+    // Set httpOnly cookie for API authentication
+    response.cookies.set('token', result.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+    
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
