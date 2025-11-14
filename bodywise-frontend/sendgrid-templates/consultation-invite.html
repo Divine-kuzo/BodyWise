@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #3a2218; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 0 auto; padding: 2px; background: #f5ebe3; }
+    .header { background: linear-gradient(to right, #fdf9f6, #f5ece4, #fdf9f6); color: #3a2218; padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0; border-bottom: 3px solid #523329; }
+    .icon { width: 48px; height: 48px; margin: 0 auto 15px; }
+    .content { background: white; padding: 40px 30px; border-radius: 0 0 12px 12px; }
+    .button { display: inline-block; background: #523329; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; margin: 25px 0; font-weight: 600; }
+    .message { background: #f9f0e6; padding: 20px; border-left: 4px solid #523329; margin: 25px 0; font-style: italic; border-radius: 8px; }
+    .footer { text-align: center; margin-top: 30px; color: #6a4a3a; font-size: 13px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8L10.89 13.26C11.5308 13.6728 12.4692 13.6728 13.11 13.26L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" stroke="#523329" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>You've Been Invited</h1>
+    </div>
+    <div class="content">
+      <p>Hello {{recipientName}},</p>
+      <p>{{senderName}} has invited you to join a consultation with <strong>{{professionalName}}</strong>.</p>
+      
+      {{#if message}}
+      <div class="message">"{{message}}"</div>
+      {{/if}}
+      
+      <p>Accept this invitation to book your consultation slot automatically:</p>
+      
+      <a href="{{acceptLink}}" class="button">Accept Invitation</a>
+      
+      <p style="color: #666; font-size: 12px; margin-top: 30px;">
+        This invitation was sent by {{senderName}} through BodyWise.
+      </p>
+    </div>
+    <div class="footer">
+      <p>© 2025 BodyWise. Taking care of your health, one consultation at a time.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #3a2218; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 0 auto; padding: 2px; background: #f5ebe3; }
+    .header { background: linear-gradient(to right, #fdf9f6, #f5ece4, #fdf9f6); color: #3a2218; padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0; border-bottom: 3px solid #e6c8ab; }
+    .icon { width: 48px; height: 48px; margin: 0 auto 15px; }
+    .content { background: white; padding: 40px 30px; border-radius: 0 0 12px 12px; }
+    .button { display: inline-block; background: #523329; color: white; padding: 16px 40px; text-decoration: none; border-radius: 8px; margin: 25px 0; font-weight: 700; font-size: 16px; }
+    .urgent { background: #f0d5b8; color: #3a2218; padding: 20px; border-radius: 8px; text-align: center; font-weight: 600; margin: 25px 0; border: 2px solid #e6c8ab; }
+    .footer { text-align: center; margin-top: 30px; color: #6a4a3a; font-size: 13px; padding: 20px; }
+    .tip { background: #fdf9f6; padding: 15px; border-radius: 8px; margin-top: 25px; font-size: 14px; color: #6a4a3a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#e6c8ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 6V12L16 14" stroke="#523329" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>Starting in 1 Hour</h1>
+    </div>
+    <div class="content">
+      <div class="urgent">
+        Your consultation with {{professionalName}} starts at {{time}}
+      </div>
+      
+      <p>Hello {{patientName}},</p>
+      <p>Your consultation is starting in 1 hour. Please make sure you're ready to join.</p>
+      
+      <center>
+        <a href="{{meetingLink}}" class="button">JOIN NOW</a>
+      </center>
+      
+      <p><small>We recommend joining a few minutes early to test your camera and microphone.</small></p>
+    </div>
+    <div class="footer">
+      <p>© 2025 BodyWise. Taking care of your health, one consultation at a time.</p>
+    </div>
+  </div>
+</body>
+</html>
