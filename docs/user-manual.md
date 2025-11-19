@@ -177,3 +177,100 @@ After a completed consultation:
 3. **Submit Review**
    - Reviews help other students
    - Professionals can respond
+
+### AI Health Coach Chat
+
+**Access Your Private AI Health Coach:**
+
+```
+Dashboard >>> AI Chat
+```
+
+#### Privacy First: Your Conversations Are PRIVATE
+
+**Important Privacy Notice:**
+
+BodyWise's AI Health Coach is designed with your privacy as the top priority:
+
+ **Zero Data Persistence**
+- Your messages are **NOT saved** to any database
+- Conversations are completely **ephemeral** (temporary)
+- No chat history is stored or logged
+- No conversation tracking or analytics
+
+ **Complete Privacy**
+- Each conversation is private and isolated
+- No data shared with third parties
+- No user profiling or behavioral tracking
+- Messages disappear when you close the chat
+
+ **What This Means for You**
+- Feel free to discuss sensitive topics openly
+- Your conversations remain confidential
+- No permanent record of what you share
+- Start fresh every time you visit
+
+> **You'll see this notice in the chat:**  
+> "Your messages are NOT saved. This is a temporary, private conversation."
+
+#### How to Use AI Chat
+
+1. **Start a Conversation**
+   - Navigate to AI Chat from your dashboard
+   - Read the privacy notice
+   - Type your message in the chat box
+   - Press Enter or click Send
+
+2. **What You Can Ask**
+   - General health and wellness questions
+   - Mental health support and guidance
+   - Body positivity and self-esteem
+   - Stress management techniques
+   - Study and lifestyle tips
+   - Nutrition and exercise advice
+   - Sleep hygiene recommendations
+
+3. **AI Capabilities**
+   - Provides evidence-based guidance
+   - Culturally sensitive responses
+   - Non-judgmental support
+   - Real-time streaming responses
+   - Markdown formatting (bold, lists, etc.)
+
+#### Important Limitations
+
+**The AI Chat is NOT a replacement for professional care:**
+
+- **Emergency Situations**: If you're in crisis, contact emergency services (911) or crisis hotline immediately
+- **Medical Diagnosis**: AI cannot diagnose medical conditions
+- **Prescriptions**: Cannot prescribe medications
+- **Professional Care**: For ongoing mental health concerns, book a consultation with our licensed professionals
+
+**When AI Will Refer You:**
+- Suicidal thoughts or self-harm ideation
+- Severe mental health crises
+- Medical emergencies
+- Situations requiring professional intervention
+
+#### Best Practices
+
+ **Do:**
+- Ask general health and wellness questions
+- Seek advice on managing stress or anxiety
+- Request study tips and lifestyle guidance
+- Explore body positivity topics
+- Discuss concerns openly (remember: no data saved!)
+
+ **Don't:**
+- Share personal identifying information (though not saved, best practice)
+- Rely solely on AI for serious mental health issues
+- Use instead of scheduled professional consultations
+- Expect medical diagnosis or prescriptions
+
+#### Technical Information
+
+**Powered by Advanced AI:**
+- Uses Groq API with state-of-the-art language models
+- Default model: Llama 3.3 (70 billion parameters)
+- Real-time streaming responses (200-500ms)
+- Supports up to 8,192 tokens per conversation
