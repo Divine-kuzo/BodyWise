@@ -5,7 +5,7 @@ import db from '@/lib/db';
 // Get professional details including availability
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Authenticate user
@@ -18,7 +18,8 @@ export async function GET(
       );
     }
     
-    const professionalId = parseInt(params.id);
+    const { id } = await params;
+    const professionalId = parseInt(id);
     
     // Get professional details
     const professionalQuery = db.prepare(`

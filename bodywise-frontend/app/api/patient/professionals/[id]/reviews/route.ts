@@ -4,10 +4,11 @@ import db from '@/lib/db';
 // GET - Get all reviews for a professional
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const professionalId = parseInt(params.id);
+    const { id } = await params;
+    const professionalId = parseInt(id);
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');

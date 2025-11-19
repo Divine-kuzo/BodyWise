@@ -5,7 +5,7 @@ import db from '@/lib/db';
 // Respond to consultation invite (accept/decline)
 export async function PUT(
   request: Request,
-  { params }: { params: { inviteId: string } }
+  { params }: { params: Promise<{ inviteId: string }> }
 ) {
   try {
     // Authenticate user
@@ -18,7 +18,8 @@ export async function PUT(
       );
     }
     
-    const inviteId = parseInt(params.inviteId);
+    const { inviteId } = await params;
+    const inviteIdNum = parseInt(inviteId);
     const { action } = await request.json();
     
     // Validate action
@@ -46,7 +47,7 @@ export async function PUT(
       FROM consultation_attendees ca
       JOIN consultations c ON ca.consultation_id = c.id
       WHERE ca.id = ? AND ca.patient_id = ? AND ca.invitation_status = 'pending'
-    `).get(inviteId, patient.id) as any;
+    `).get(inviteIdNum, patient.id) as any;
     
     if (!inviteCheck) {
       return NextResponse.json(
