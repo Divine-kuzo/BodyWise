@@ -274,3 +274,68 @@ BodyWise's AI Health Coach is designed with your privacy as the top priority:
 - Default model: Llama 3.3 (70 billion parameters)
 - Real-time streaming responses (200-500ms)
 - Supports up to 8,192 tokens per conversation
+
+**Privacy-Preserving Design:**
+- Messages processed in real-time only
+- No database storage
+- Server-side API key security
+- Session-based conversations only
+- Automatic timeout after inactivity
+
+#### Frequently Asked Questions
+
+**Q: Can anyone see my chat messages?**  
+A: No. Messages are not saved anywhere and are only processed temporarily to generate responses.
+
+**Q: What happens to my conversation history?**  
+A: There is no conversation history. Each chat session is independent and temporary.
+
+**Q: Is the AI monitored or reviewed by staff?**  
+A: No. Conversations are not monitored, logged, or reviewed by anyone.
+
+**Q: Can I download my chat history?**  
+A: Since conversations aren't saved, there's nothing to download.
+
+**Q: How does this differ from professional consultations?**  
+A: AI provides general guidance and support. Professional consultations offer personalized care, diagnosis, and treatment plans.
+
+**Q: What if I need immediate help?**  
+A: For emergencies, always contact:
+- Emergency Services: 911
+- Crisis Hotline: 988 (Suicide & Crisis Lifeline)
+- Campus Security/Counseling (if on campus)
+
+### Educational Resources
+
+Access wellness and mental health resources:
+
+1. **Browse Articles**
+   ```
+   Dashboard >>> Education
+   ```
+
+2. **Article Topics**
+   - Body positivity and self-acceptance
+   - Mental wellness strategies
+   - Stress management techniques
+   - Healthy lifestyle tips
+   - Student wellness guides
+   - Nutrition and fitness advice
+
+3. **Read & Learn**
+   - Click on any article to read full content
+   - Articles created by verified health professionals
+   - Evidence-based information from trusted sources
+   - View publication dates and author information
+
+> **Note**: Educational content is stored in the `articles` table. Only articles that have been approved by institutional admins and marked as published will appear in the education section.
+
+### Inviting Friends
+
+Share consultation access:
+
+1. **Select Consultation**
+2. Click "Invite Friend"
+3. Enter friend's email
+4. They receive invitation link
+5. Both can join the session
