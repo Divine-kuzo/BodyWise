@@ -339,3 +339,546 @@ Share consultation access:
 3. Enter friend's email
 4. They receive invitation link
 5. Both can join the session
+
+### Profile Management
+
+Update your information:
+
+```
+Dashboard >>> Profile Settings
+```
+
+**Editable Fields:**
+- Username
+- Email
+- Phone number
+- Profile picture
+- Emergency contact
+
+---
+
+## Health Professional Guide
+
+### Dashboard Overview
+
+Your professional dashboard includes:
+- Today's consultations
+- Weekly schedule overview
+- Patient statistics
+- Performance metrics
+
+### Setting Up Your Profile
+
+1. **Complete Profile**
+   ```
+   Dashboard → Profile
+   ```
+
+2. **Add Information**
+   - Professional title
+   - Specializations
+   - Qualifications/certifications
+   - Bio (max 500 characters)
+   - Profile photo
+   - Years of experience
+
+3. **Professional Details**
+   - License number
+   - Professional associations
+   - Languages spoken
+   - Therapeutic approaches
+
+### Managing Availability
+
+#### Set Weekly Schedule
+
+1. **Configure Schedule**
+   ```
+   Dashboard >>> Schedule >>> Availability
+   ```
+
+2. **Set Working Days**
+   - Select days of the week
+   - Set start time (e.g., 09:00)
+   - Set end time (e.g., 17:00)
+
+3. **Configure Slots**
+   - Consultation duration (30, 45, or 60 min)
+   - Break between sessions
+   - Maximum daily consultations
+
+4. **Save Changes**
+   - Slots generated automatically
+   - Students can now book
+
+#### Block Specific Times
+
+1. Go to Schedule Calendar
+2. Click time slot to block
+3. Select "Mark Unavailable"
+4. Add reason (optional)
+
+#### View Bookings
+
+```
+Dashboard >>> Schedule >>> Bookings
+```
+
+**Information Shown:**
+- Patient name
+- Date and time
+- Consultation status
+- Patient notes
+- Meeting link
+
+### Managing Consultations
+
+#### Before Consultation
+
+1. **Review Patient Notes**
+   - Check consultation reason
+   - Review any previous sessions
+   - Prepare materials if needed
+
+2. **Receive Reminders**
+   - Email 24 hours before
+   - Email 1 hour before
+   - Desktop notification (if enabled)
+
+#### During Consultation
+
+1. **Join Meeting**
+   ```
+   Dashboard >> Today's Sessions >>> Join
+   ```
+
+2. **Video Call Features**
+   - Screen sharing
+   - Text chat backup
+   - Recording (with consent)
+   - Whiteboard
+
+3. **Take Notes**
+   - Use consultation notes section
+   - Private notes (not shared with patient)
+   - Recommendations for follow-up
+
+#### After Consultation
+
+1. **Update Status**
+   - Mark as completed
+   - Add session summary
+   - Recommend follow-up if needed
+
+2. **View Patient Feedback**
+   - Check reviews
+   - Respond to feedback
+   - Track ratings
+
+### Patient Management
+
+#### View Patient List
+
+```
+Dashboard >>> Patients
+```
+
+**Patient Information:**
+- Name and contact
+- Total consultations
+- Last session date
+- Consultation history
+
+#### Consultation History
+
+1. Click on patient name
+2. View all past sessions
+3. Review notes and outcomes
+4. Track progress over time
+
+### Performance Metrics
+
+Track your performance:
+
+```
+Dashboard >>> Analytics
+```
+
+**Metrics Include:**
+- Total consultations
+- Average rating
+- Response time
+- Completion rate
+- Peak booking times
+- Patient retention
+
+### Notifications
+
+Manage notification preferences:
+
+```
+Dashboard >>> Settings >>> Notifications
+```
+
+**Options:**
+- Email notifications (24h, 1h reminders)
+- New booking alerts
+- Cancellation notifications
+- Review notifications
+
+---
+
+## Institution Admin Guide
+
+### Dashboard Overview
+
+Institution dashboard shows:
+- Active health professionals
+- Total students served
+- Upcoming sessions
+- System usage
+
+### Managing Health Professionals
+
+#### Onboard New Professional
+
+1. **Add Professional**
+   ```
+   Dashboard >>> Doctors >>> Add Doctor
+   ```
+
+2. **Enter Details**
+   - Email address
+   - Name
+   - Specialization
+   - Employment status
+
+3. **Send Invitation**
+   - System sends setup email
+   - Professional completes profile
+   - You approve activation
+
+#### View Professional List
+
+```
+Dashboard >>> Doctors
+```
+
+**Actions Available:**
+- View profile
+- View schedule
+- View consultations
+- Suspend/activate account
+
+### Institution Settings
+
+Configure your institution:
+
+```
+Dashboard >>> Institution Settings
+```
+
+**Settings:**
+- Institution name
+- Location
+- Contact information
+- Logo upload
+- Working hours
+- Policies
+
+### Viewing Reports
+
+Access institutional reports:
+
+```
+Dashboard >>> Reports
+```
+
+**Available Reports:**
+- Monthly consultation statistics
+- Professional utilization
+- Student engagement
+- Peak usage times
+- Satisfaction scores
+
+### Document Management
+
+Manage institutional documents:
+
+```
+Dashboard >>> Documents
+```
+
+**Document Types:**
+- Policies and procedures
+- Consent forms
+- Privacy policy
+- Terms of service
+
+---
+
+## System Admin Guide
+
+### Dashboard Overview
+
+System admin dashboard includes:
+- Platform health metrics
+- Active users
+- System performance
+- Content moderation queue
+
+### User Management
+
+#### View All Users
+
+```
+Admin Dashboard >>> Users
+```
+
+**User Actions:**
+- View details
+- Edit information
+- Suspend account
+- Delete user (careful!)
+- Reset password
+
+#### User Roles
+
+- **Patient** - Standard user
+- **Health Professional** - Service provider
+- **Institution Admin** - Facility manager
+- **System Admin** - Platform administrator
+
+### Institution Management
+
+#### Add Institution
+
+```
+Admin Dashboard >>> Institutions >>> Add New
+```
+
+**Required Information:**
+- Institution name
+- Type (University, College, etc.)
+- Location
+- Contact person
+- Email and phone
+
+#### Verify Institution
+
+1. Review submitted details
+2. Check credentials
+3. Approve or request changes
+4. Institution becomes active
+
+### Content Moderation
+
+#### Approve Blog Posts
+
+```
+Admin Dashboard >>> Content >>> Blogs >>> Pending
+```
+
+1. Review article content
+2. Check for appropriateness
+3. Approve or reject
+4. Provide feedback if rejected
+
+#### Approve Testimonials
+
+```
+Admin Dashboard >>> Content >>> Testimonials >>> Pending
+```
+
+1. Read testimonial
+2. Verify authenticity
+3. Approve for public display
+4. Feature best testimonials
+
+### System Monitoring
+
+#### Performance Metrics
+
+```
+Admin Dashboard >>> System >>> Performance
+```
+
+**Metrics:**
+- Response time
+- Database performance
+- API latency
+- Error rates
+
+#### Activity Logs
+
+```
+Admin Dashboard >>> Activity Logs
+```
+
+**Log Information:**
+- User actions
+- System events
+- Error logs
+- Security events
+
+### Analytics
+
+View platform-wide analytics:
+
+```
+Admin Dashboard >>> Analytics
+```
+
+**Data Points:**
+- Total users by type
+- Daily active users
+- Consultation trends
+- Growth metrics
+- Geographic distribution
+
+---
+
+## Features Reference
+
+### Email Notifications
+
+Automatic email notifications for:
+
+**For Patients:**
+- Booking confirmation
+- 24-hour reminder
+- 1-hour reminder
+- Cancellation notice
+- Review request
+
+**For Professionals:**
+- New booking alert
+- 24-hour reminder
+- 1-hour reminder
+- Cancellation notice
+- Review received
+
+### Video Conferencing
+
+**Powered by Jitsi Meet:**
+- No downloads required
+- Browser-based
+- End-to-end encryption
+- Screen sharing
+- Recording capability
+- Mobile support
+
+**Requirements:**
+- Modern web browser
+- Stable internet connection
+- Camera and microphone
+- Quiet environment
+
+### Review System
+
+**Rating Scale:**
+- ⭐⭐⭐⭐⭐ Excellent
+- ⭐⭐⭐⭐ Very Good
+- ⭐⭐⭐ Good
+- ⭐⭐ Fair
+- ⭐ Poor
+
+**Review Guidelines:**
+- Be honest and constructive
+- Focus on experience
+- Respect privacy
+- No personal attacks
+- Helpful to other users
+
+---
+
+## FAQ
+
+### General Questions
+
+**Q: Is BodyWise free to use?**
+A: Yes.
+
+**Q: Is my data secure?**
+A: Yes, we use industry-standard encryption and comply with data protection regulations.
+
+**Q: Can I use BodyWise on mobile?**
+A: Yes, the platform is fully responsive and works on mobile browsers.
+
+### Booking Questions
+
+**Q: How far in advance can I book?**
+A: Up to 30 days in advance.
+
+**Q: Can I book multiple consultations?**
+A: Yes, but maximum 2 per day.
+
+**Q: What if I need to cancel?**
+A: Cancel through your dashboard. Try to give 24 hours notice.
+
+**Q: Can I reschedule instead of cancelling?**
+A: Yes, cancel and book a new time slot.
+
+### Consultation Questions
+
+**Q: How long are consultations?**
+A: Typically 30-60 minutes, set by the professional.
+
+**Q: What if I'm late?**
+A: Join as soon as possible. Session may be shortened.
+
+**Q: Can I record the session?**
+A: Only with explicit consent from the professional.
+
+**Q: What if technical issues occur?**
+A: Contact support immediately. We can reschedule.
+
+### Privacy Questions
+
+**Q: Are consultations confidential?**
+A: Yes, bound by patient confidentiality.
+
+### Technical Questions
+
+**Q: Which browsers are supported?**
+A: Chrome, Firefox, Safari, Edge (latest versions).
+
+**Q: Do I need to install anything?**
+A: No, everything works in your browser.
+
+**Q: What internet speed do I need?**
+A: Minimum 1 Mbps, recommended 3 Mbps or higher.
+
+---
+
+## Getting Help
+
+### Support Channels
+
+- **Email**: p.dusenge@alustudent.com
+- **Live Chat**: Available in app (Mon-Fri, 9 AM - 5 PM)
+- **Documentation**: [docs](../docs/)
+- **Bug Reports**: [GitHub Issues](https://github.com/Divine-kuzo/BodyWise/issues)
+
+### Emergency Support
+
+For urgent mental health crises:
+- Call your local emergency services
+- Contact campus security
+- Use crisis hotlines in your area
+
+BodyWise is for scheduled support, not emergency intervention.
+
+---
+
+## Appendix
+
+### Browser Requirements
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+---
+
+For technical documentation, see [API Documentation](./API_DOCUMENTATION.md).
