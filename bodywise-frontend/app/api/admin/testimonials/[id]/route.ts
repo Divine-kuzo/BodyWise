@@ -5,7 +5,7 @@ import db from '@/lib/db';
 // PUT /api/admin/testimonials/[id] - Approve or reject testimonial
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const currentUser = getUserFromRequest(request);
@@ -17,7 +17,8 @@ export async function PUT(
       );
     }
 
-    const testimonialId = parseInt(params.id);
+    const { id } = await params;
+    const testimonialId = parseInt(id);
     const { action, is_featured, rejection_reason } = await request.json();
 
     if (!action || !['approve', 'reject'].includes(action)) {

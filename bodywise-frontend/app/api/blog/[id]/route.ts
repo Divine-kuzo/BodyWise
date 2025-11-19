@@ -4,10 +4,11 @@ import db from '@/lib/db';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const blogId = parseInt(params.id);
+    const { id } = await params;
+    const blogId = parseInt(id);
     
     const article = db.prepare(`
       SELECT 
@@ -94,7 +95,7 @@ export async function GET(
 // update blog (author only, if not yet approved)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const currentUser = getUserFromRequest(request);
@@ -106,7 +107,8 @@ export async function PUT(
       );
     }
     
-    const blogId = parseInt(params.id);
+    const { id } = await params;
+    const blogId = parseInt(id);
     const article = db.prepare('SELECT * FROM articles WHERE id = ?').get(blogId) as any;
     
     if (!article) {
@@ -182,7 +184,7 @@ export async function PUT(
 // delete blog (author only, if not approved)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const currentUser = getUserFromRequest(request);
@@ -194,7 +196,8 @@ export async function DELETE(
       );
     }
     
-    const blogId = parseInt(params.id);
+    const { id } = await params;
+    const blogId = parseInt(id);
     const article = db.prepare('SELECT * FROM articles WHERE id = ?').get(blogId) as any;
     
     if (!article) {

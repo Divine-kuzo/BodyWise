@@ -51,7 +51,7 @@ export async function GET(req: Request) {
       WHERE hp.user_id = ?
     `);
 
-    const professional = professionalQuery.get(decoded.userId);
+    const professional = professionalQuery.get(decoded.userId) as any;
 
     if (!professional) {
       return NextResponse.json(
@@ -74,7 +74,7 @@ export async function GET(req: Request) {
       WHERE professional_id = ?
     `);
 
-    const reviewStats = reviewStatsQuery.get(professional.id);
+    const reviewStats = reviewStatsQuery.get(professional.id) as any;
 
     // Get recent reviews
     const recentReviewsQuery = db.prepare(`
