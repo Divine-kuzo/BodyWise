@@ -96,3 +96,84 @@ Your patient dashboard shows:
    - Availability
    - Rating
    - Institution
+
+3. **View Profile**
+   - Click on any professional to see:
+     - Bio and qualifications
+     - Specializations
+     - Years of experience
+     - Patient reviews
+     - Average rating
+
+### Booking a Consultation
+
+1. **Select Professional**
+   - Find your preferred health professional
+   - Click "Book Appointment"
+
+2. **Choose Time Slot**
+   - View available slots
+   - Select date and time
+   - Maximum 2 consultations per day
+
+3. **Confirm Booking**
+   - Review details
+   - Add consultation notes (optional)
+   - Click "Confirm Booking"
+
+4. **Receive Confirmation**
+   - Email confirmation sent immediately
+   - Calendar invite included
+   - Jitsi meeting link provided
+
+### Managing Consultations
+
+#### View Your Consultations
+```
+Dashboard >>> My Consultations
+```
+
+**Consultation Statuses:**
+- **Pending** - Awaiting confirmation
+- **Confirmed** - Scheduled and confirmed
+- **Completed** - Session finished
+- **Cancelled** - Cancelled by either party
+
+#### Join Video Call
+
+1. **Access Meeting**
+   - Go to consultation details
+   - Click "Join Meeting" 15 minutes before
+   - Ensure camera and microphone work
+
+2. **During Consultation**
+   - Professional will join at scheduled time
+   - Use chat if audio issues occur
+   - Session lasts scheduled duration
+
+#### Cancel Consultation
+
+1. Go to consultation details
+2. Click "Cancel Consultation"
+3. Provide reason (helps improve service)
+4. Confirm cancellation
+
+> **Note**: Cancel at least 24 hours in advance when possible
+
+### Leaving Reviews
+
+After a completed consultation:
+
+1. **Navigate to Consultation**
+   ```
+   My Consultations → Select Completed Session
+   ```
+
+2. **Write Review**
+   - Rate 1-5 stars
+   - Write detailed feedback
+   - Be respectful and constructive
+
+3. **Submit Review**
+   - Reviews help other students
+   - Professionals can respond
