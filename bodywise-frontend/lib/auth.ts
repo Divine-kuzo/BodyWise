@@ -73,14 +73,30 @@ export async function authenticateUser(email: string, password: string) {
 
 // middleware helper to get user from request
 export function getUserFromRequest(request: Request): TokenPayload | null {
+  // Try to get token from Authorization header first
   const authHeader = request.headers.get('authorization');
   
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    return verifyToken(token);
   }
   
-  const token = authHeader.substring(7);
-  return verifyToken(token);
+  // If no Authorization header, try to get token from cookie
+  const cookieHeader = request.headers.get('cookie');
+  if (cookieHeader) {
+    const cookies = Object.fromEntries(
+      cookieHeader.split('; ').map(c => {
+        const [key, ...v] = c.split('=');
+        return [key, v.join('=')];
+      })
+    );
+    
+    if (cookies.token) {
+      return verifyToken(cookies.token);
+    }
+  }
+  
+  return null;
 }
 
 // role-based authorization
