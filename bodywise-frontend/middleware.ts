@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
 
 // protection mapping
 const protectedRoutes = {
@@ -13,9 +14,13 @@ const protectedRoutes = {
 const authRequiredRoutes = ['/admin', '/doctor', '/institution', '/user'];
 
 // routes with no authentication
-const publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/api'];
+const publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/education', '/testimonials', '/api-docs', '/api'];
 
-export function middleware(request: NextRequest) {
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+);
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // allow public and API routes
@@ -28,7 +33,7 @@ export function middleware(request: NextRequest) {
   
   if (requiresAuth) {
     // get token from cookie or header
-    const token = request.cookies.get('auth_token')?.value || 
+    const token = request.cookies.get('token')?.value || 
                   request.headers.get('authorization')?.replace('Bearer ', '');
 
     // redirect to login if no token
@@ -40,11 +45,30 @@ export function middleware(request: NextRequest) {
 
     // verify token and check role
     try {
-      // pass through with token present
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+      const userRole = payload.role as string;
+
+      // check role permissions for protected routes
+      for (const [route, allowedRoles] of Object.entries(protectedRoutes)) {
+        if (pathname.startsWith(route) && !allowedRoles.includes(userRole)) {
+          // unauthorized - redirect to their appropriate dashboard
+          const roleRedirectMap: Record<string, string> = {
+            'system_admin': '/admin',
+            'health_professional': '/doctor',
+            'institutional_admin': '/institution',
+            'patient': '/user',
+          };
+          const redirectPath = roleRedirectMap[userRole] || '/login';
+          return NextResponse.redirect(new URL(redirectPath, request.url));
+        }
+      }
+
+      // pass through with valid token and role
       const response = NextResponse.next();
-      response.headers.set('x-pathname', pathname);
+      response.headers.set('x-user-role', userRole);
       return response;
     } catch (error) {
+      console.error('Token verification failed:', error);
       const loginUrl = new URL('/login', request.url); //Invalid token, redirect to login
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
