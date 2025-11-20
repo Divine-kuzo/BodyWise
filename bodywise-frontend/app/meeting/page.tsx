@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import JitsiMeeting from '@/components/meeting/jitsi-meeting';
 import { useAuth } from '@/lib/auth-context';
 
-export default function MeetingPage() {
+function MeetingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user } = useAuth();
@@ -166,5 +166,20 @@ export default function MeetingPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function MeetingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-xl">Loading meeting...</p>
+        </div>
+      </div>
+    }>
+      <MeetingContent />
+    </Suspense>
   );
 }
