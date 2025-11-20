@@ -28,7 +28,7 @@ function generateSlots(scheduleId: number, professionalId: number, startTime: st
 }
 
 async function main() {
-  console.log('🔄 Generating 30-minute slots for all schedules...\n');
+  console.log('Generating 30-minute slots for all schedules...\n');
   
   // Get all schedules
   const schedules = db.prepare(`
@@ -82,7 +82,7 @@ async function main() {
     GROUP BY hp.id
   `).all();
   
-  console.log('\n📊 Summary:');
+  console.log('\nSummary:');
   console.table(summary);
 }
 

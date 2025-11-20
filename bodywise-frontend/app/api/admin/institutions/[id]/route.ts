@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getUserFromRequest, hasRole } from '@/lib/auth';
+import { sendInstitutionApprovalEmail, sendInstitutionRejectionEmail } from '@/lib/email';
 import db from '@/lib/db';
 
 // Verify or reject an institution
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Authenticate user
@@ -18,7 +19,8 @@ export async function PUT(
       );
     }
     
-    const institutionId = parseInt(params.id);
+    const { id } = await params;
+    const institutionId = parseInt(id);
     const { action, reason } = await request.json();
     
     // Validate action
@@ -29,9 +31,23 @@ export async function PUT(
       );
     }
     
-    // Check if institution exists
-    const institution = db.prepare('SELECT id FROM institutions WHERE id = ?').get(institutionId);
-    if (!institution) {
+    // Get institution details with admin email
+    const institutionData = db.prepare(`
+      SELECT 
+        i.id,
+        i.name,
+        i.bio,
+        i.location,
+        ia.full_name as admin_name,
+        u.email as admin_email
+      FROM institutions i
+      JOIN institutional_admins ia ON i.id = ia.institution_id
+      JOIN users u ON ia.user_id = u.id
+      WHERE i.id = ?
+      LIMIT 1
+    `).get(institutionId) as any;
+    
+    if (!institutionData) {
       return NextResponse.json(
         { error: 'Institution not found' },
         { status: 404 }
@@ -78,6 +94,27 @@ export async function PUT(
     
     transaction();
     
+    // Send email notification
+    try {
+      if (action === 'approve') {
+        await sendInstitutionApprovalEmail({
+          to: institutionData.admin_email,
+          institutionName: institutionData.name,
+          adminName: institutionData.admin_name,
+        });
+      } else {
+        await sendInstitutionRejectionEmail({
+          to: institutionData.admin_email,
+          institutionName: institutionData.name,
+          adminName: institutionData.admin_name,
+          reason: reason || 'Did not meet verification requirements',
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send email notification:', emailError);
+      // Don't fail the request if email fails
+    }
+    
     return NextResponse.json({
       success: true,
       message: `Institution ${status} successfully`,
@@ -94,7 +131,7 @@ export async function PUT(
 // Get institution details
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Authenticate user
@@ -107,7 +144,8 @@ export async function GET(
       );
     }
     
-    const institutionId = parseInt(params.id);
+    const { id } = await params;
+    const institutionId = parseInt(id);
     
     // Get institution details
     const institutionQuery = db.prepare(`

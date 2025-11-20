@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,11 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased bg-[#f5ebe3] text-[#3a2218]`}
+        suppressHydrationWarning
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

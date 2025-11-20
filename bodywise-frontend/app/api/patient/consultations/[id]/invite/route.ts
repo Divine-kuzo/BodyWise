@@ -5,7 +5,7 @@ import db from '@/lib/db';
 // Invite another patient to group session
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Authenticate user
@@ -18,7 +18,8 @@ export async function POST(
       );
     }
     
-    const consultationId = parseInt(params.id);
+    const { id } = await params;
+    const consultationId = parseInt(id);
     const { patient_username } = await request.json();
     
     // Validate input

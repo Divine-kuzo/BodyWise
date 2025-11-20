@@ -122,7 +122,7 @@ export default function DoctorProfilePage() {
             key={star}
             className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
           >
-            ★
+            Rating:
           </span>
         ))}
       </div>
@@ -329,17 +329,17 @@ export default function DoctorProfilePage() {
                 </h2>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl">🏥</span>
+                    <span className="text-2xl text-[#6a4a3a] font-semibold">Institution</span>
                     <div>
                       <p className="text-lg font-medium">{profile.institution_name}</p>
                       {profile.institution_location && (
                         <p className="text-sm text-gray-600">
-                          📍 {profile.institution_location}
+                          {profile.institution_location}
                         </p>
                       )}
                       {profile.institution_verification === 'approved' && (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
-                          ✓ Verified Institution
+                          Verified Institution
                         </span>
                       )}
                     </div>
@@ -412,7 +412,7 @@ export default function DoctorProfilePage() {
 
                     return (
                       <div key={star} className="flex items-center gap-2">
-                        <span className="text-sm w-8">{star}★</span>
+                        <span className="text-sm w-8">{star} star</span>
                         <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-yellow-400"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   RiCpuLine,
@@ -23,77 +23,76 @@ interface SystemMetric {
 export function SystemMonitor() {
   const [isRunning, setIsRunning] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [metrics, setMetrics] = useState<SystemMetric[]>([
-    {
-      label: "CPU Usage",
-      value: "45%",
-      percentage: 45,
-      status: "healthy",
-      icon: RiCpuLine,
-    },
-    {
-      label: "Memory (RAM)",
-      value: "6.2 GB / 16 GB",
-      percentage: 38,
-      status: "healthy",
-      icon: RiDatabase2Line,
-    },
-    {
-      label: "Disk Space",
-      value: "142 GB / 500 GB",
-      percentage: 28,
-      status: "healthy",
-      icon: RiHardDriveLine,
-    },
-    {
-      label: "Network I/O",
-      value: "2.4 MB/s",
-      percentage: 24,
-      status: "healthy",
-      icon: RiServerLine,
-    },
-  ]);
+  const [metrics, setMetrics] = useState<SystemMetric[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPerformanceData();
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchPerformanceData, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchPerformanceData = async () => {
+    try {
+      const response = await fetch('/api/admin/performance', {
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch performance data');
+      }
+
+      const result = await response.json();
+      const data = result.data;
+
+      // Format metrics from real data
+      const newMetrics: SystemMetric[] = [
+        {
+          label: "CPU Usage",
+          value: `${data.cpu.usage}%`,
+          percentage: parseFloat(data.cpu.usage),
+          status: parseFloat(data.cpu.usage) > 80 ? "warning" : parseFloat(data.cpu.usage) > 90 ? "critical" : "healthy",
+          icon: RiCpuLine,
+        },
+        {
+          label: "Memory (RAM)",
+          value: `${(data.memory.usedMem / 1024 / 1024 / 1024).toFixed(1)} GB / ${(data.memory.totalMem / 1024 / 1024 / 1024).toFixed(1)} GB`,
+          percentage: parseFloat(data.memory.percent),
+          status: parseFloat(data.memory.percent) > 80 ? "warning" : parseFloat(data.memory.percent) > 90 ? "critical" : "healthy",
+          icon: RiDatabase2Line,
+        },
+        {
+          label: "Disk Space",
+          value: data.disk.percent > 0 
+            ? `${(data.disk.used / 1024 / 1024 / 1024).toFixed(1)} GB / ${(data.disk.total / 1024 / 1024 / 1024).toFixed(1)} GB`
+            : "N/A",
+          percentage: data.disk.percent,
+          status: data.disk.percent > 80 ? "warning" : data.disk.percent > 90 ? "critical" : "healthy",
+          icon: RiHardDriveLine,
+        },
+        {
+          label: "Database Size",
+          value: `${(data.database.size / 1024 / 1024).toFixed(1)} MB`,
+          percentage: Math.min((data.database.size / 1024 / 1024 / 100) * 100, 100), // Scale to 100MB max
+          status: "healthy",
+          icon: RiServerLine,
+        },
+      ];
+
+      setMetrics(newMetrics);
+      setLastUpdate(new Date());
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch performance data:', error);
+      setLoading(false);
+    }
+  };
 
   const runDiagnostics = async () => {
     setIsRunning(true);
-    
-    // Simulate running diagnostics
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    // Simulate random metrics (in production, these would come from actual system APIs)
-    const newMetrics: SystemMetric[] = [
-      {
-        label: "CPU Usage",
-        value: `${Math.floor(Math.random() * 40 + 30)}%`,
-        percentage: Math.floor(Math.random() * 40 + 30),
-        status: Math.random() > 0.8 ? "warning" : "healthy",
-        icon: RiCpuLine,
-      },
-      {
-        label: "Memory (RAM)",
-        value: `${(Math.random() * 8 + 4).toFixed(1)} GB / 16 GB`,
-        percentage: Math.floor(Math.random() * 50 + 25),
-        status: Math.random() > 0.85 ? "warning" : "healthy",
-        icon: RiDatabase2Line,
-      },
-      {
-        label: "Disk Space",
-        value: `${Math.floor(Math.random() * 100 + 100)} GB / 500 GB`,
-        percentage: Math.floor(Math.random() * 40 + 20),
-        status: "healthy",
-        icon: RiHardDriveLine,
-      },
-      {
-        label: "Network I/O",
-        value: `${(Math.random() * 5 + 1).toFixed(1)} MB/s`,
-        percentage: Math.floor(Math.random() * 30 + 15),
-        status: "healthy",
-        icon: RiServerLine,
-      },
-    ];
-    
-    setMetrics(newMetrics);
-    setLastUpdate(new Date());
+    await fetchPerformanceData();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsRunning(false);
   };
 
