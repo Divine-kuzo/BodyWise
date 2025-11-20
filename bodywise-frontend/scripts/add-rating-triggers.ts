@@ -82,7 +82,7 @@ try {
   // recalculate all existing ratings
   console.log('Recalculating existing ratings...');
   
-  const professionals = db.prepare('SELECT id FROM health_professionals').all();
+  const professionals = db.prepare('SELECT id FROM health_professionals').all() as Array<{ id: number }>;
   
   for (const prof of professionals) {
     const stats = db.prepare(`
@@ -91,7 +91,7 @@ try {
         COUNT(*) as total
       FROM reviews
       WHERE professional_id = ?
-    `).get(prof.id) as any;
+    `).get(prof.id) as { avg_rating: number; total: number };
 
     db.prepare(`
       UPDATE health_professionals

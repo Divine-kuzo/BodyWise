@@ -80,7 +80,7 @@ async function main() {
     FROM availability_slots s
     JOIN health_professionals hp ON s.professional_id = hp.id
     GROUP BY hp.id
-  `).all();
+  `).all() as Array<{ full_name: string; total_slots: number }>;
   
   console.log('\nSummary:');
   console.table(summary);

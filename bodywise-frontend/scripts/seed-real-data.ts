@@ -178,9 +178,9 @@ function seedUsers() {
     FROM health_professionals hp
     JOIN users u ON hp.user_id = u.id
     WHERE u.role = 'health_professional'
-  `).all();
+  `).all() as Array<{ id: number; user_id: number }>;
 
-  doctorUsers.forEach((doctor: any) => {
+  doctorUsers.forEach((doctor) => {
     // Add availability for all days of the week (0=Sunday, 6=Saturday)
     for (let dayOfWeek = 1; dayOfWeek <= 5; dayOfWeek++) {
       db.prepare(`
