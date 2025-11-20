@@ -1,0 +1,130 @@
+import cron from 'node-cron';
+import Database from 'better-sqlite3';
+import { join } from 'path';
+import { sendEmail, emailTemplates } from './email';
+
+const db = new Database(join(process.cwd(), 'bodywise.db'));
+db.pragma('foreign_keys = ON');
+
+// Process pending email reminders
+export async function processEmailReminders() {
+  try {
+    // Get pending reminders that are due
+    const pendingReminders = db.prepare(`
+      SELECT 
+        er.id,
+        er.consultation_id,
+        er.recipient_email,
+        er.reminder_type,
+        c.scheduled_date,
+        c.scheduled_time,
+        c.meeting_link,
+        p.full_name as patient_name,
+        hp.full_name as professional_name
+      FROM email_reminders er
+      JOIN consultations c ON er.consultation_id = c.id
+      JOIN patients p ON c.patient_id = p.id
+      JOIN health_professionals hp ON c.professional_id = hp.id
+      WHERE er.status = 'pending'
+        AND er.scheduled_time <= datetime('now')
+        AND c.status = 'scheduled'
+      LIMIT 50
+    `).all() as Array<{
+      id: number;
+      consultation_id: number;
+      recipient_email: string;
+      reminder_type: string;
+      scheduled_date: string;
+      scheduled_time: string;
+      meeting_link: string;
+      patient_name: string;
+      professional_name: string;
+    }>;
+
+    console.log(`Processing ${pendingReminders.length} pending email reminders...`);
+
+    for (const reminder of pendingReminders) {
+      let template;
+
+      switch (reminder.reminder_type) {
+        case 'confirmation':
+          template = emailTemplates.confirmation({
+            patientName: reminder.patient_name,
+            professionalName: reminder.professional_name,
+            date: reminder.scheduled_date,
+            time: reminder.scheduled_time,
+            meetingLink: reminder.meeting_link,
+          });
+          break;
+
+        case '24hr':
+          template = emailTemplates.reminder24h({
+            patientName: reminder.patient_name,
+            professionalName: reminder.professional_name,
+            date: reminder.scheduled_date,
+            time: reminder.scheduled_time,
+            meetingLink: reminder.meeting_link,
+          });
+          break;
+
+        case '1hr':
+          template = emailTemplates.reminder1h({
+            patientName: reminder.patient_name,
+            professionalName: reminder.professional_name,
+            time: reminder.scheduled_time,
+            meetingLink: reminder.meeting_link,
+          });
+          break;
+
+        default:
+          console.log(`Unknown reminder type: ${reminder.reminder_type}`);
+          continue;
+      }
+
+      // Send email
+      const result = await sendEmail(reminder.recipient_email, template);
+
+      // Update reminder status
+      if (result.success) {
+        db.prepare(`
+          UPDATE email_reminders
+          SET status = 'sent', sent_at = datetime('now')
+          WHERE id = ?
+        `).run(reminder.id);
+        console.log(`✅ Sent ${reminder.reminder_type} email to ${reminder.recipient_email}`);
+      } else {
+        db.prepare(`
+          UPDATE email_reminders
+          SET status = 'failed', error_message = ?
+          WHERE id = ?
+        `).run(result.error || 'Unknown error', reminder.id);
+        console.log(`❌ Failed to send email to ${reminder.recipient_email}: ${result.error}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error processing email reminders:', error);
+  }
+}
+
+// Start the cron job (runs every minute)
+export function startEmailReminderCron() {
+  console.log('📧 Starting email reminder cron job...');
+  
+  // Run every minute
+  cron.schedule('* * * * *', async () => {
+    await processEmailReminders();
+  });
+
+  // Also process immediately on startup
+  processEmailReminders();
+}
+
+// For manual execution
+if (require.main === module) {
+  console.log('Running email reminder processor...');
+  processEmailReminders().then(() => {
+    console.log('Done!');
+    db.close();
+    process.exit(0);
+  });
+}
