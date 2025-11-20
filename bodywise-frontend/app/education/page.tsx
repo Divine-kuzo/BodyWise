@@ -44,7 +44,7 @@ export default function EducationPage() {
         setTotalPages(data.pagination.totalPages);
         
         // Extract unique categories
-        const uniqueCategories = [...new Set(data.data.map((article: BlogArticle) => article.category).filter(Boolean))];
+        const uniqueCategories = [...new Set(data.data.map((article: BlogArticle) => article.category).filter(Boolean))] as string[];
         setCategories(uniqueCategories);
       }
     } catch (error) {
