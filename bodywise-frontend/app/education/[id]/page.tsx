@@ -20,19 +20,23 @@ interface BlogArticle {
   created_at: string;
 }
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
+export default function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [article, setArticle] = useState<BlogArticle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [articleId, setArticleId] = useState<string>('');
 
   useEffect(() => {
-    fetchArticle();
-  }, [params.id]);
+    params.then(p => {
+      setArticleId(p.id);
+      fetchArticle(p.id);
+    });
+  }, []);
 
-  const fetchArticle = async () => {
+  const fetchArticle = async (id: string) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/blog/${params.id}`);
+      const response = await fetch(`/api/blog/${id}`);
       const data = await response.json();
       
       if (data.success) {
