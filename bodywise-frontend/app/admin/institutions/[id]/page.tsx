@@ -194,14 +194,14 @@ export default function InstitutionDetailPage({
               onClick={handleApprove}
               disabled={actionLoading}
             >
-              {actionLoading ? 'Processing...' : '✓ Approve'}
+              {actionLoading ? 'Processing...' : 'Approve'}
             </Button>
             <button
               onClick={() => setShowRejectForm(!showRejectForm)}
               className="rounded-full border-2 border-red-600 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white disabled:opacity-50"
               disabled={actionLoading}
             >
-              ✕ Reject
+              Reject
             </button>
           </div>
         ) : (
@@ -331,7 +331,7 @@ export default function InstitutionDetailPage({
                   rel="noopener noreferrer"
                   className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-[#523329] hover:underline"
                 >
-                  📄 View Certificate →
+                  View Certificate →
                 </a>
               ) : (
                 <p className="mt-1 text-sm text-[#6a4a3a]">Not provided</p>
@@ -346,7 +346,7 @@ export default function InstitutionDetailPage({
                   rel="noopener noreferrer"
                   className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-[#523329] hover:underline"
                 >
-                  📎 View Documents →
+                  View Documents →
                 </a>
               ) : (
                 <p className="mt-1 text-sm text-[#6a4a3a]">Not provided</p>

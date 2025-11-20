@@ -9,39 +9,33 @@ import {
 
 const columns = [
   {
-    title: "Use cases",
+    title: "Platform",
     links: [
-      "UI design",
-      "UX design",
-      "Wireframing",
-      "Diagramming",
-      "Brainstorming",
-      "Online whiteboard",
-      "Team collaboration",
+      { name: "About Us", href: "/#about" },
+      { name: "Our Services", href: "/#services" },
+      { name: "How It Works", href: "/#features" },
+      { name: "Success Stories", href: "/testimonials" },
+      { name: "Contact", href: "/#contact" },
     ],
   },
   {
     title: "Explore",
     links: [
-      "Design",
-      "Prototyping",
-      "Development features",
-      "Design systems",
-      "Collaboration features",
-      "Design process",
-      "FigJam",
+      { name: "Sign In", href: "/login" },
+      { name: "Sign Up", href: "/signup" },
+      { name: "Testimonials", href: "/testimonials" },
+      { name: "Find Doctors", href: "/user/doctors" },
+      { name: "Education Hub", href: "/education" },
     ],
   },
   {
     title: "Resources",
     links: [
-      "Blog",
-      "Best practices",
-      "Colors",
-      "Color wheel",
-      "Support",
-      "Developers",
-      "Resource library",
+      { name: "Education", href: "/education" },
+      { name: "Developers", href: "/api-docs" },
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Support", href: "/support" },
     ],
   },
 ];
@@ -93,9 +87,9 @@ export function Footer() {
               </h4>
               <ul className="space-y-2 text-sm text-[#f5ebe3]/80">
                 {column.links.map((link) => (
-                  <li key={link}>
-                    <Link href="#" className="hover:text-white transition">
-                      {link}
+                  <li key={link.name}>
+                    <Link href={link.href} className="hover:text-white transition">
+                      {link.name}
                     </Link>
                   </li>
                 ))}

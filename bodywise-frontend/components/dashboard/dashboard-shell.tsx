@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/utils";
 import {
   RiDashboard3Line,
@@ -15,6 +16,9 @@ import {
   RiChatSmile3Line,
   RiHeartsLine,
   RiBookOpenLine,
+  RiUserLine,
+  RiArticleLine,
+  RiStarLine,
 } from "react-icons/ri";
 import type { NavItem } from "@/lib/navigation";
 
@@ -38,6 +42,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   chat: RiChatSmile3Line,
   community: RiHeartsLine,
   learn: RiBookOpenLine,
+  user: RiUserLine,
+  blogs: RiArticleLine,
+  testimonials: RiStarLine,
 };
 
 export function DashboardShell({
@@ -49,6 +56,7 @@ export function DashboardShell({
   navItems,
 }: DashboardShellProps) {
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-[#f5ebe3]">
@@ -93,7 +101,10 @@ export function DashboardShell({
               })}
             </nav>
             <div className="mt-10 pt-4 border-t border-[#f1e3d9]">
-              <button className="flex w-full items-center justify-center rounded-full bg-[#f0d5b8]/80 px-4 py-3 text-sm font-semibold text-[#6a4a3a] transition hover:bg-[#e6c8ab]">
+              <button 
+                onClick={logout}
+                className="flex w-full items-center justify-center rounded-full bg-[#f0d5b8]/80 px-4 py-3 text-sm font-semibold text-[#6a4a3a] transition hover:bg-[#e6c8ab]"
+              >
                 Logout
               </button>
             </div>

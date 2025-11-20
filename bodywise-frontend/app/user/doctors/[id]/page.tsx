@@ -166,14 +166,14 @@ export default function DoctorDetailPage() {
           <p className="mb-4 text-sm text-[#6a4a3a]">{doctor.specialization}</p>
           <div className="mb-4 flex items-center gap-2 text-sm">
             <span className="inline-flex items-center gap-1 rounded-full bg-[#f0d5b8]/80 px-3 py-1 font-semibold text-[#6a4a3a]">
-              ★ {doctor.average_rating ? doctor.average_rating.toFixed(1) : 'New'}
+              Rating: {doctor.average_rating ? doctor.average_rating.toFixed(1) : 'New'}
             </span>
             <span className="text-[#80685b]">{doctor.total_reviews} reviews</span>
           </div>
           <p className="mb-4 text-sm text-[#6a4a3a]">{doctor.bio}</p>
           <div className="space-y-2 text-sm text-[#80685b]">
-            <p>💼 {doctor.years_of_experience}+ years experience</p>
-            <p>🏥 {doctor.institution_name}</p>
+            <p>{doctor.years_of_experience}+ years experience</p>
+            <p>{doctor.institution_name}</p>
           </div>
         </div>
 

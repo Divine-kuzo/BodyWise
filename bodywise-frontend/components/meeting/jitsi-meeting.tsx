@@ -166,7 +166,7 @@ export default function JitsiMeeting({
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-red-50 z-10">
           <div className="text-center p-6">
-            <div className="text-red-600 text-xl mb-2">⚠️</div>
+            <div className="text-red-600 text-xl mb-2 font-bold">Warning</div>
             <p className="text-red-800 font-semibold">{error}</p>
             <button
               onClick={() => window.location.reload()}

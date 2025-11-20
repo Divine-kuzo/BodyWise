@@ -109,7 +109,7 @@ export default function TestimonialsPage() {
             onClick={() => setShowSubmitForm(!showSubmitForm)}
             className="bg-white text-[#523329] px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors"
           >
-            {showSubmitForm ? 'Cancel' : '✨ Share Your Story'}
+            {showSubmitForm ? 'Cancel' : 'Share Your Story'}
           </button>
         </div>
       </div>
@@ -221,7 +221,7 @@ export default function TestimonialsPage() {
               >
                 {testimonial.is_featured && (
                   <div className="mb-3 inline-flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
-                    ⭐ Featured
+                    Featured
                   </div>
                 )}
                 

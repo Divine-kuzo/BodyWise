@@ -123,7 +123,7 @@ export default function UserDoctorsPage() {
                     <h3 className="text-lg font-semibold text-[#3a2218]">{doctor.full_name}</h3>
                     <p className="text-sm text-[#6a4a3a]">{doctor.specialization}</p>
                     {doctor.institution_name && (
-                      <p className="text-xs text-[#80685b]">📍 {doctor.institution_name}</p>
+                      <p className="text-xs text-[#80685b]">{doctor.institution_name}</p>
                     )}
                   </div>
                 </div>
@@ -132,7 +132,7 @@ export default function UserDoctorsPage() {
 
                 <div className="flex items-center gap-4 text-xs text-[#80685b]">
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#f0d5b8]/80 px-3 py-1 font-semibold text-[#6a4a3a]">
-                    ★ {doctor.average_rating ? doctor.average_rating.toFixed(1) : 'New'}
+                    Rating: {doctor.average_rating ? doctor.average_rating.toFixed(1) : 'New'}
                   </span>
                   <span>{doctor.years_of_experience}+ years exp</span>
                   {doctor.total_reviews > 0 && (

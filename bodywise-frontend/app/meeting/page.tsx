@@ -110,7 +110,7 @@ export default function MeetingPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="bg-white rounded-lg p-8 max-w-md text-center">
-          <div className="text-red-600 text-4xl mb-4">⚠️</div>
+          <div className="text-red-600 text-4xl mb-4 font-bold">Warning</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Cannot Join Meeting</h1>
           <p className="text-gray-600 mb-6">{error}</p>
           <button
@@ -129,8 +129,8 @@ export default function MeetingPage() {
   }
 
   const displayName = user?.role === 'patient'
-    ? consultation.patient_name || user.email
-    : consultation.professional_name || user.email;
+    ? consultation.patient_name || user?.email
+    : consultation.professional_name || user?.email;
 
   return (
     <div className="min-h-screen bg-gray-900">

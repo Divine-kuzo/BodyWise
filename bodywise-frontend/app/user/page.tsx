@@ -150,7 +150,7 @@ export default function UserDashboardPage() {
                   {article.thumbnail_url ? (
                     <img src={article.thumbnail_url} alt={article.title} className="h-40 w-full object-cover transition-transform group-hover:scale-105" />
                   ) : (
-                    <div className="flex h-40 items-center justify-center"><span className="text-4xl">📚</span></div>
+                    <div className="flex h-40 items-center justify-center"><span className="text-4xl text-[#6a4a3a]">Education</span></div>
                   )}
                 </div>
                 <span className="mb-1 inline-block rounded-full bg-[#f0d5b8]/80 px-3 py-1 text-xs font-semibold text-[#6a4a3a]">{article.category}</span>

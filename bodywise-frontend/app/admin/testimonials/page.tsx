@@ -141,7 +141,7 @@ export default function AdminTestimonialsPage() {
                 </div>
                 {testimonial.rating && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#f0d5b8]/80 px-3 py-1 text-sm font-semibold text-[#6a4a3a]">
-                    ★ {testimonial.rating}/5
+                    {testimonial.rating}/5
                   </span>
                 )}
               </div>
@@ -170,7 +170,7 @@ export default function AdminTestimonialsPage() {
                     variant="primary"
                     className="flex-1"
                   >
-                    {actionLoading === testimonial.id ? 'Processing...' : '⭐ Approve as Featured'}
+                    {actionLoading === testimonial.id ? 'Processing...' : 'Approve as Featured'}
                   </Button>
                   <Button
                     onClick={() => handleReject(testimonial.id)}

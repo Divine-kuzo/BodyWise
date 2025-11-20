@@ -158,7 +158,7 @@ export default function DoctorDashboardPage() {
           <div>
             <p className="text-xs text-[#80685b]">Rating</p>
             <p className="text-sm font-semibold text-[#3a2218]">
-              ⭐ {data.professional.rating.toFixed(1)} ({data.professional.total_reviews} reviews)
+              {data.professional.rating.toFixed(1)} / 5.0 ({data.professional.total_reviews} reviews)
             </p>
           </div>
           <div>
