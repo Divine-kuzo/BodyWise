@@ -1,0 +1,266 @@
+import nodemailer from 'nodemailer';
+
+/**
+ * Nodemailer with SendGrid SMTP Configuration
+ * Configure via environment variables in .env.local
+ */
+function getTransporter() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.sendgrid.net',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true', // false for port 587
+    auth: {
+      user: process.env.SMTP_USER || 'apikey', // SendGrid always uses 'apikey' as username
+      pass: process.env.SMTP_PASS, // Your SendGrid API key
+    },
+  });
+}
+
+// Default from address
+const defaultFrom = process.env.SMTP_FROM_EMAIL 
+  ? `${process.env.SMTP_FROM_NAME || 'BodyWise'} <${process.env.SMTP_FROM_EMAIL}>`
+  : process.env.SMTP_USER || 'noreply@bodywise.com';
+
+// Email templates
+export const emailTemplates = {
+  confirmation: (data: {
+    patientName: string;
+    professionalName: string;
+    date: string;
+    time: string;
+    meetingLink: string;
+  }) => ({
+    subject: 'Consultation Confirmed - BodyWise',
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .button { display: inline-block; background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+          .details { background: white; padding: 20px; border-left: 4px solid #667eea; margin: 20px 0; }
+          .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🎉 Consultation Confirmed!</h1>
+          </div>
+          <div class="content">
+            <p>Dear ${data.patientName},</p>
+            <p>Your consultation has been successfully booked.</p>
+            
+            <div class="details">
+              <h3>📋 Consultation Details</h3>
+              <p><strong>Doctor:</strong> ${data.professionalName}</p>
+              <p><strong>Date:</strong> ${data.date}</p>
+              <p><strong>Time:</strong> ${data.time}</p>
+              <p><strong>Duration:</strong> 30 minutes</p>
+            </div>
+            
+            <p>Join your consultation at the scheduled time using the link below:</p>
+            <a href="${data.meetingLink}" class="button">Join Video Meeting</a>
+            
+            <p><small>Note: You will receive reminder emails 24 hours and 1 hour before your consultation.</small></p>
+          </div>
+          <div class="footer">
+            <p>© 2024 BodyWise. Taking care of your health, one consultation at a time.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  }),
+
+  reminder24h: (data: {
+    patientName: string;
+    professionalName: string;
+    date: string;
+    time: string;
+    meetingLink: string;
+  }) => ({
+    subject: 'Reminder: Consultation Tomorrow - BodyWise',
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .button { display: inline-block; background: #f5576c; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+          .details { background: white; padding: 20px; border-left: 4px solid #f5576c; margin: 20px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>⏰ Consultation Tomorrow!</h1>
+          </div>
+          <div class="content">
+            <p>Hello ${data.patientName},</p>
+            <p>This is a friendly reminder that you have a consultation scheduled tomorrow.</p>
+            
+            <div class="details">
+              <h3>📋 Consultation Details</h3>
+              <p><strong>Doctor:</strong> ${data.professionalName}</p>
+              <p><strong>Date:</strong> ${data.date}</p>
+              <p><strong>Time:</strong> ${data.time}</p>
+            </div>
+            
+            <a href="${data.meetingLink}" class="button">Join Video Meeting</a>
+            
+            <p>Please make sure you're available at the scheduled time. If you need to cancel, please do so at least 6 hours in advance.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  }),
+
+  reminder1h: (data: {
+    patientName: string;
+    professionalName: string;
+    time: string;
+    meetingLink: string;
+  }) => ({
+    subject: '🚨 Consultation Starting Soon - BodyWise',
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .button { display: inline-block; background: #fa709a; color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; margin: 20px 0; font-size: 18px; font-weight: bold; }
+          .urgent { background: #fee140; color: #333; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🚨 Starting in 1 Hour!</h1>
+          </div>
+          <div class="content">
+            <div class="urgent">
+              Your consultation with ${data.professionalName} starts at ${data.time}
+            </div>
+            
+            <p>Hello ${data.patientName},</p>
+            <p>Your consultation is starting in 1 hour. Please make sure you're ready to join.</p>
+            
+            <center>
+              <a href="${data.meetingLink}" class="button">🎥 JOIN NOW</a>
+            </center>
+            
+            <p><small>We recommend joining a few minutes early to test your camera and microphone.</small></p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  }),
+
+  invite: (data: {
+    recipientName: string;
+    senderName: string;
+    professionalName: string;
+    message?: string;
+    acceptLink: string;
+  }) => ({
+    subject: `${data.senderName} invited you to a consultation - BodyWise`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .button { display: inline-block; background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+          .message { background: white; padding: 20px; border-left: 4px solid #667eea; margin: 20px 0; font-style: italic; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>💌 You've Been Invited!</h1>
+          </div>
+          <div class="content">
+            <p>Hello ${data.recipientName},</p>
+            <p>${data.senderName} has invited you to join a consultation with <strong>${data.professionalName}</strong>.</p>
+            
+            ${data.message ? `<div class="message">"${data.message}"</div>` : ''}
+            
+            <p>Accept this invitation to book your consultation slot automatically:</p>
+            
+            <a href="${data.acceptLink}" class="button">Accept Invitation</a>
+            
+            <p style="color: #666; font-size: 12px; margin-top: 30px;">
+              This invitation was sent by ${data.senderName} through BodyWise.
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  }),
+};
+
+/**
+ * Send email using Nodemailer
+ * @param to - Recipient email address
+ * @param template - Email template with subject and html
+ * @returns Promise with success status
+ */
+export async function sendEmail(to: string, template: { subject: string; html: string }) {
+  try {
+    // Skip if SMTP is not configured
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.log('⚠️  SMTP not configured. Email would be sent to:', to);
+      console.log('   Subject:', template.subject);
+      console.log('   💡 Set SMTP_USER and SMTP_PASS in .env.local to enable emails');
+      return { success: true, message: 'SMTP not configured (development mode)' };
+    }
+
+    const mailOptions = {
+      from: defaultFrom,
+      to,
+      subject: template.subject,
+      html: template.html,
+    };
+
+    const transporter = getTransporter();
+    await transporter.sendMail(mailOptions);
+
+    console.log('✅ Email sent successfully to:', to);
+    return { success: true };
+  } catch (error: any) {
+    console.error('❌ Email sending failed:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Verify SMTP connection
+ * Useful for testing email configuration
+ */
+export async function verifyEmailConnection() {
+  try {
+    const transporter = getTransporter();
+    await transporter.verify();
+    console.log('✅ SMTP connection verified');
+    return true;
+  } catch (error: any) {
+    console.error('❌ SMTP connection failed:', error.message);
+    return false;
+  }
+}
