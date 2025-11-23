@@ -24,7 +24,9 @@ export function HeroSection() {
             </p>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <Button id="cta">Start Free Assessment</Button>
+            <Link href="/login">
+              <Button id="cta">Start Free Assessment</Button>
+            </Link>
             <Link
               href="#education"
               className={buttonVariants({ variant: "ghost" })}
@@ -47,8 +49,8 @@ export function HeroSection() {
           <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/10 p-2 shadow-[0_45px_75px_-35px_rgba(0,0,0,0.5)] backdrop-blur">
             <div className="overflow-hidden rounded-[24px]">
               <Image
-                src="https://images.unsplash.com/photo-1544717304-a2db4a7b16ee?auto=format&fit=crop&w=900&q=80"
-                alt="Professional wellness advisor"
+                src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=80"
+                alt="African women celebrating wellness and confidence"
                 width={520}
                 height={560}
                 className="h-full w-full object-cover"

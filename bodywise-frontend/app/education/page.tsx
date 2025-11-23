@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { RiCalendarLine, RiEyeLine, RiPriceTag3Line, RiUserLine } from 'react-icons/ri';
 import { useRouter } from 'next/navigation';
+import { Navbar } from '@/components/layout/navbar';
 
 interface BlogArticle {
   id: number;
@@ -74,6 +75,7 @@ export default function EducationPage() {
 
   return (
     <div className="min-h-screen bg-[#f5ebe3]">
+      <Navbar />
       {/* Header */}
       <div className="bg-[#523329] text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

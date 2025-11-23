@@ -50,6 +50,7 @@ export default function DoctorDashboardPage() {
       if (!response.ok) throw new Error('Failed to fetch dashboard data');
       
       const result = await response.json();
+      console.log('Dashboard API Response:', result);
       setData(result.data);
     } catch (err: any) {
       setError(err.message);
@@ -96,22 +97,25 @@ export default function DoctorDashboardPage() {
     { label: 'Completed', value: data.stats.completedConsultations.toString(), trend: 'up' as const },
   ];
 
-  const upcomingSchedule = data.upcomingConsultations.map(consultation => ({
-    title: `Session with ${consultation.patient_name}`,
-    date: new Date(consultation.scheduled_date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }),
-    time: new Date(`2000-01-01T${consultation.scheduled_time}`).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }),
-    specialist: data.professional.specialization,
-    status: consultation.status,
-    meeting_link: consultation.meeting_link,
-  }));
+  const upcomingSchedule = data.upcomingConsultations.map(consultation => {
+    const startTime = new Date(`2000-01-01T${consultation.scheduled_time}`);
+    const endTime = new Date(startTime.getTime() + (consultation.duration_minutes || 30) * 60000);
+    const timeRange = `${startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - ${endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+    
+    return {
+      title: `Session with ${consultation.patient_name}`,
+      date: new Date(consultation.scheduled_date).toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+      }),
+      time: timeRange,
+      duration: `${consultation.duration_minutes || 30} min`,
+      patient: consultation.patient_name,
+      status: consultation.status,
+      meeting_link: consultation.meeting_link,
+    };
+  });
 
   const patientTableData = data.activePatients.map(patient => ({
     name: patient.full_name || patient.username,

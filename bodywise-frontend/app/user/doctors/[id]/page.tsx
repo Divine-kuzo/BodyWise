@@ -37,7 +37,7 @@ export default function DoctorDetailPage() {
   const [bookingLoading, setBookingLoading] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
   const [notes, setNotes] = useState('');
-  const [inviteeEmail, setInviteeEmail] = useState('');
+  const [inviteeUsername, setInviteeUsername] = useState('');
   const [showInviteSection, setShowInviteSection] = useState(false);
 
   useEffect(() => {
@@ -52,15 +52,19 @@ export default function DoctorDetailPage() {
         fetch(`/api/patient/available-slots?professional_id=${doctorId}`, { credentials: 'include' })
       ]);
 
-      if (!doctorRes.ok || !slotsRes.ok) throw new Error('Failed to fetch data');
+      if (!doctorRes.ok) throw new Error('Failed to fetch doctor data');
+      if (!slotsRes.ok) {
+        console.error('Failed to fetch slots:', await slotsRes.text());
+      }
 
       const doctorData = await doctorRes.json();
-      const slotsData = await slotsRes.json();
+      const slotsData = slotsRes.ok ? await slotsRes.json() : { data: [] };
 
       setDoctor(doctorData.data);
       setSlots(slotsData.data || []);
     } catch (err: any) {
       console.error('Fetch error:', err);
+      alert(err.message || 'Failed to load doctor details');
     } finally {
       setLoading(false);
     }
@@ -79,8 +83,8 @@ export default function DoctorDetailPage() {
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          professional_id: parseInt(doctorId),
-          slot_id: selectedSlot,
+          professionalId: parseInt(doctorId),
+          slotId: selectedSlot,
           notes,
         }),
       });
@@ -92,7 +96,7 @@ export default function DoctorDetailPage() {
       }
 
       // If there's an invitee, send invitation
-      if (inviteeEmail && result.consultation) {
+      if (inviteeUsername && result.consultation) {
         await sendInvitation(result.consultation.consultationId);
       }
 
@@ -111,7 +115,7 @@ export default function DoctorDetailPage() {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invitee_email: inviteeEmail }),
+        body: JSON.stringify({ patient_username: inviteeUsername }),
       });
 
       if (!response.ok) {
@@ -144,8 +148,9 @@ export default function DoctorDetailPage() {
   }
 
   const groupedSlots = slots.reduce((acc, slot) => {
-    if (!acc[slot.slot_date]) acc[slot.slot_date] = [];
-    acc[slot.slot_date].push(slot);
+    const date = slot.slot_date || slot.start_time;
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(slot);
     return acc;
   }, {} as Record<string, AvailableSlot[]>);
 
@@ -229,13 +234,13 @@ export default function DoctorDetailPage() {
                 {showInviteSection && (
                   <div>
                     <input
-                      type="email"
-                      value={inviteeEmail}
-                      onChange={(e) => setInviteeEmail(e.target.value)}
-                      placeholder="friend@example.com"
+                      type="text"
+                      value={inviteeUsername}
+                      onChange={(e) => setInviteeUsername(e.target.value)}
+                      placeholder="Enter patient username"
                       className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                     />
-                    <p className="mt-1 text-xs text-[#80685b]">They'll receive an email invitation with the meeting link</p>
+                    <p className="mt-1 text-xs text-[#80685b]">Enter the username of another patient to invite them to this session</p>
                   </div>
                 )}
               </div>

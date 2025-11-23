@@ -28,25 +28,25 @@ export const CORE_FEATURES = [
     description:
       "Get personalized body composition analysis with AI-powered insights. Understand your BMI, body fat percentage, and receive tailored lifestyle recommendations.",
     cta: "Start Assessment",
-    href: "#assessment",
+    href: "/login",
     image:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Verified Psychologist Network",
     description:
       "Connect with licensed mental health professionals and wellness coaches. Book confidential consultations via chat or video for personalized support.",
     cta: "Find a Professional",
-    href: "#professionals",
+    href: "/login",
     image:
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Education & Awareness Hub",
     description:
       "Access culturally relevant articles, videos, and real stories about body image, mental health, and safe wellness practices. Learn at your own pace.",
     cta: "Explore Resources",
-    href: "#education",
+    href: "/login",
     image:
       "https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=900&q=80",
   },
@@ -68,7 +68,7 @@ export const EDUCATION_RESOURCES = [
       "Explore how traditional African values celebrate diverse body types and how to embrace your natural beauty.",
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-body",
+    href: "/education",
   },
   {
     tag: "Mental Health",
@@ -77,7 +77,7 @@ export const EDUCATION_RESOURCES = [
       "Learn why seeking mental health support is a sign of strength, not weakness, and how to start the conversation.",
     image:
       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-mental",
+    href: "/education",
   },
   {
     tag: "Safe Practices",
@@ -86,7 +86,7 @@ export const EDUCATION_RESOURCES = [
       "Understand the risks of unregulated products and discover safe, evidence-based alternatives for body wellness.",
     image:
       "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-safe",
+    href: "/education",
   },
   {
     tag: "Real Stories",
@@ -95,7 +95,7 @@ export const EDUCATION_RESOURCES = [
       "How community support and culturally aware counseling helped Amara gain confidence and embrace her identity.",
     image:
       "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-amara",
+    href: "/education",
   },
   {
     tag: "Body Image",
@@ -104,7 +104,7 @@ export const EDUCATION_RESOURCES = [
       "Practical tools for young men to navigate body expectations while honoring their cultural backgrounds.",
     image:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-men",
+    href: "/education",
   },
   {
     tag: "Mental Health",
@@ -113,7 +113,7 @@ export const EDUCATION_RESOURCES = [
       "Blending traditional support systems with modern therapy approaches to create accessible mental wellness pathways.",
     image:
       "https://images.unsplash.com/photo-1551292831-023188e78222?auto=format&fit=crop&w=1100&q=80",
-    href: "#resource-community",
+    href: "/education",
   },
 ] as const;
 

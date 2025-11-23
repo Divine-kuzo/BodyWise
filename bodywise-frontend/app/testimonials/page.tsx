@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { RiStarFill } from 'react-icons/ri';
 import Link from 'next/link';
+import { Navbar } from '@/components/layout/navbar';
 
 interface Testimonial {
   id: number;
@@ -98,6 +99,7 @@ export default function TestimonialsPage() {
 
   return (
     <div className="min-h-screen bg-[#f5ebe3]">
+      <Navbar />
       {/* Header */}
       <div className="bg-[#523329] text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

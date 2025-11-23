@@ -89,14 +89,21 @@ export default function UserDashboardPage() {
     { label: 'Completed', value: data.stats.completedConsultations.toString(), trend: 'stable' },
   ];
 
-  const formattedAppointments = data.upcomingAppointments.map((apt) => ({
-    title: `Session with ${apt.doctor_name}`,
-    date: new Date(apt.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    time: new Date(`2000-01-01T${apt.scheduled_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
-    specialist: apt.specialization,
-    status: apt.status,
-    meeting_link: apt.meeting_link,
-  }));
+  const formattedAppointments = data.upcomingAppointments.map((apt) => {
+    const startTime = new Date(`2000-01-01T${apt.scheduled_time}`);
+    const endTime = new Date(startTime.getTime() + (apt.duration_minutes || 30) * 60000);
+    const timeRange = `${startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - ${endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+    
+    return {
+      title: `Session with ${apt.doctor_name}`,
+      date: new Date(apt.scheduled_date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+      time: timeRange,
+      duration: `${apt.duration_minutes || 30} min`,
+      specialist: apt.specialization,
+      status: apt.status,
+      meeting_link: apt.meeting_link,
+    };
+  });
 
   return (
     <DashboardShell

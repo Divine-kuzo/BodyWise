@@ -18,10 +18,10 @@ export const FONT_FAMILY = {
 };
 
 export const SOCIAL_LINKS = [
-  { name: "X", href: "#" },
-  { name: "Instagram", href: "#" },
-  { name: "YouTube", href: "#" },
-  { name: "LinkedIn", href: "#" },
+  { name: "X", href: "https://twitter.com/bodywiseafrica" },
+  { name: "Instagram", href: "https://instagram.com/bodywiseafrica" },
+  { name: "YouTube", href: "https://youtube.com/@bodywiseafrica" },
+  { name: "LinkedIn", href: "https://linkedin.com/company/bodywise-africa" },
 ] as const;
 
 export const NAV_LINKS = [
