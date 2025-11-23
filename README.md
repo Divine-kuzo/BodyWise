@@ -23,6 +23,8 @@
 
 BodyWise is a comprehensive mental health platform designed specifically for educational institutions. We connect students with qualified mental health professionals, providing easy access to consultations, educational resources, and community support.
 
+**[Demo Video](https://www.tella.tv/video/body-wise-africa-ai-health-wellness-platform-55rm)**
+
 #### Built With
 
 - **[Next.js](https://nextjs.org/)** - React framework for production
