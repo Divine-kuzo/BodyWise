@@ -77,15 +77,7 @@ export default function SignupPage() {
           Create account
         </Button>
         <p className="text-xs text-[#80685b]">
-          By continuing, you agree to BodyWise Africa&apos;s{" "}
-          <Link href="#" className="font-semibold text-[#3a2218]">
-            Terms
-          </Link>{" "}
-          and{" "}
-          <Link href="#" className="font-semibold text-[#3a2218]">
-            Privacy Policy
-          </Link>
-          .
+          By continuing, you agree to BodyWise Africa&apos;s Terms and Privacy Policy.
         </p>
       </form>
     </AuthShell>

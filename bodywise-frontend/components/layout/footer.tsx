@@ -12,30 +12,18 @@ const columns = [
     title: "Platform",
     links: [
       { name: "About Us", href: "/#about" },
-      { name: "Our Services", href: "/#services" },
       { name: "How It Works", href: "/#features" },
       { name: "Success Stories", href: "/testimonials" },
-      { name: "Contact", href: "/#contact" },
-    ],
-  },
-  {
-    title: "Explore",
-    links: [
-      { name: "Sign In", href: "/login" },
-      { name: "Sign Up", href: "/signup" },
-      { name: "Testimonials", href: "/testimonials" },
-      { name: "Find Doctors", href: "/user/doctors" },
       { name: "Education Hub", href: "/education" },
     ],
   },
   {
-    title: "Resources",
+    title: "Get Started",
     links: [
-      { name: "Education", href: "/education" },
-      { name: "Developers", href: "/api-docs" },
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Support", href: "/support" },
+      { name: "Sign In", href: "/login" },
+      { name: "Sign Up", href: "/signup" },
+      { name: "Find Doctors", href: "/user/doctors" },
+      { name: "API Documentation", href: "/api-docs" },
     ],
   },
 ];

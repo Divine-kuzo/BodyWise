@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
           </p>
           <p>
             New to BodyWise?{" "}
-            <Link href="/join" className="font-semibold text-[#3a2218]">
+            <Link href="/signup" className="font-semibold text-[#3a2218]">
               Join the community
             </Link>
           </p>

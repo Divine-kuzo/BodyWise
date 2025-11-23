@@ -95,30 +95,25 @@ export async function GET(request: Request) {
       LIMIT 3
     `).all();
 
-    // Get pending invitations (if table exists)
-    let pendingInvitations: any[] = [];
-    try {
-      pendingInvitations = db.prepare(`
-        SELECT 
-          ci.id,
-          ci.invitee_email,
-          ci.status,
-          ci.sent_at,
-          c.scheduled_date,
-          c.scheduled_time,
-          hp.full_name as doctor_name
-        FROM consultation_invites ci
-        JOIN consultations c ON ci.consultation_id = c.id
-        JOIN health_professionals hp ON c.professional_id = hp.id
-        WHERE ci.inviter_patient_id = ?
-          AND ci.status = 'pending'
-        ORDER BY ci.sent_at DESC
-        LIMIT 5
-      `).all(patient.id);
-    } catch (err) {
-      // Table doesn't exist yet, return empty array
-      console.log('consultation_invites table not found, skipping');
-    }
+    // Get pending invitations from consultation_attendees
+    const pendingInvitations = db.prepare(`
+      SELECT 
+        ca.id,
+        ca.invitation_status as status,
+        ca.invited_at,
+        c.scheduled_date,
+        c.scheduled_time,
+        hp.full_name as doctor_name,
+        p.username as invitee_username
+      FROM consultation_attendees ca
+      JOIN consultations c ON ca.consultation_id = c.id
+      JOIN health_professionals hp ON c.professional_id = hp.id
+      JOIN patients p ON ca.patient_id = p.id
+      WHERE ca.patient_id = ?
+        AND ca.invitation_status = 'pending'
+      ORDER BY ca.invited_at DESC
+      LIMIT 5
+    `).all(patient.id) as any[];
 
     return NextResponse.json({
       success: true,

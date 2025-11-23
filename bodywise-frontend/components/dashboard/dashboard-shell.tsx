@@ -174,6 +174,12 @@ export function DashboardShell({
                     </Link>
                   );
                 })}
+                <button 
+                  onClick={logout}
+                  className="flex min-w-max items-center gap-2 rounded-full bg-[#f0d5b8]/80 px-4 py-2 text-xs font-semibold text-[#6a4a3a] transition hover:bg-[#e6c8ab]"
+                >
+                  Logout
+                </button>
               </div>
             ) : null}
           </header>

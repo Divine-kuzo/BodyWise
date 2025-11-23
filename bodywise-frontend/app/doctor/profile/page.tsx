@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { DashboardShell } from '@/components/dashboard/dashboard-shell';
+import { Button } from '@/components/ui/button';
+import { doctorNav } from '@/lib/navigation';
 
 interface ProfessionalProfile {
   id: number;
@@ -131,66 +134,62 @@ export default function DoctorProfilePage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
+      <DashboardShell
+        title="Loading..."
+        subtitle="Please wait"
+        breadcrumbs={[{ label: 'Doctor', href: '/doctor' }, { label: 'Profile' }]}
+        navItems={doctorNav}
+      >
+        <div className="flex items-center justify-center py-12">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#523329] border-t-transparent"></div>
         </div>
-      </div>
+      </DashboardShell>
     );
   }
 
   if (!profile) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
+      <DashboardShell
+        title="Profile Not Found"
+        subtitle="Unable to load your profile"
+        breadcrumbs={[{ label: 'Doctor', href: '/doctor' }, { label: 'Profile' }]}
+        navItems={doctorNav}
+      >
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-center">
           <p className="text-red-600">Profile not found</p>
+          <Button onClick={() => router.push('/doctor')} className="mt-4">Back to Dashboard</Button>
         </div>
-      </div>
+      </DashboardShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
-            <button
-              onClick={() => router.push('/doctor')}
-              className="text-blue-600 hover:text-blue-800"
-            >
-              ← Back to Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <DashboardShell
+      title="My Professional Profile"
+      subtitle="Manage your professional information and view patient feedback"
+      breadcrumbs={[{ label: 'Doctor', href: '/doctor' }, { label: 'Profile' }]}
+      navItems={doctorNav}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Profile Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Basic Info Card */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="rounded-3xl border border-[#e6d8ce] bg-white p-6 shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-[#3a2218]">
                   Professional Information
                 </h2>
                 {!editing && (
-                  <button
-                    onClick={() => setEditing(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                  >
+                  <Button onClick={() => setEditing(true)} variant="secondary">
                     Edit Profile
-                  </button>
+                  </Button>
                 )}
               </div>
 
               {editing ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#3a2218] mb-2">
                       Full Name *
                     </label>
                     <input
@@ -199,13 +198,13 @@ export default function DoctorProfilePage() {
                       onChange={(e) =>
                         setFormData({ ...formData, full_name: e.target.value })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#3a2218] mb-2">
                       Bio
                     </label>
                     <textarea
@@ -214,13 +213,13 @@ export default function DoctorProfilePage() {
                         setFormData({ ...formData, bio: e.target.value })
                       }
                       rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                       placeholder="Tell patients about yourself..."
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#3a2218] mb-2">
                       Specialization *
                     </label>
                     <input
@@ -229,13 +228,13 @@ export default function DoctorProfilePage() {
                       onChange={(e) =>
                         setFormData({ ...formData, specialization: e.target.value })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#3a2218] mb-2">
                       Years of Experience
                     </label>
                     <input
@@ -247,13 +246,13 @@ export default function DoctorProfilePage() {
                           years_of_experience: parseInt(e.target.value) || 0,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                       min="0"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#3a2218] mb-2">
                       Phone
                     </label>
                     <input
@@ -262,59 +261,56 @@ export default function DoctorProfilePage() {
                       onChange={(e) =>
                         setFormData({ ...formData, phone: e.target.value })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full rounded-2xl border border-[#e6d8ce] bg-white px-4 py-3 text-sm text-[#3a2218] placeholder:text-[#a1897c] focus:border-[#d6b28f] focus:outline-none focus:ring-2 focus:ring-[#d6b28f]/20"
                     />
                   </div>
 
                   <div className="flex gap-3">
-                    <button
-                      type="submit"
-                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    >
+                    <Button type="submit">
                       Save Changes
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="button"
                       onClick={() => setEditing(false)}
-                      className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                      variant="secondary"
                     >
                       Cancel
-                    </button>
+                    </Button>
                   </div>
                 </form>
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-600">Full Name</p>
-                    <p className="text-lg font-medium">{profile.full_name}</p>
+                    <p className="text-sm text-[#80685b]">Full Name</p>
+                    <p className="text-lg font-medium text-[#3a2218]">{profile.full_name}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="text-lg">{profile.email}</p>
+                    <p className="text-sm text-[#80685b]">Email</p>
+                    <p className="text-lg text-[#3a2218]">{profile.email}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm text-gray-600">Specialization</p>
-                    <p className="text-lg font-medium">{profile.specialization}</p>
+                    <p className="text-sm text-[#80685b]">Specialization</p>
+                    <p className="text-lg font-medium text-[#3a2218]">{profile.specialization}</p>
                   </div>
 
                   {profile.bio && (
                     <div>
-                      <p className="text-sm text-gray-600">Bio</p>
-                      <p className="text-gray-700">{profile.bio}</p>
+                      <p className="text-sm text-[#80685b]">Bio</p>
+                      <p className="text-[#6a4a3a]">{profile.bio}</p>
                     </div>
                   )}
 
                   <div>
-                    <p className="text-sm text-gray-600">Years of Experience</p>
-                    <p className="text-lg">{profile.years_of_experience} years</p>
+                    <p className="text-sm text-[#80685b]">Years of Experience</p>
+                    <p className="text-lg text-[#3a2218]">{profile.years_of_experience} years</p>
                   </div>
 
                   {profile.phone && (
                     <div>
-                      <p className="text-sm text-gray-600">Phone</p>
-                      <p className="text-lg">{profile.phone}</p>
+                      <p className="text-sm text-[#80685b]">Phone</p>
+                      <p className="text-lg text-[#3a2218]">{profile.phone}</p>
                     </div>
                   )}
                 </div>
@@ -323,23 +319,22 @@ export default function DoctorProfilePage() {
 
             {/* Affiliated Institution */}
             {profile.institution_name && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              <div className="rounded-3xl border border-[#e6d8ce] bg-white p-6 shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
+                <h2 className="text-xl font-semibold text-[#3a2218] mb-4">
                   Affiliated Institution
                 </h2>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl text-[#6a4a3a] font-semibold">Institution</span>
+                  <div className="flex items-start gap-3">
                     <div>
-                      <p className="text-lg font-medium">{profile.institution_name}</p>
+                      <p className="text-lg font-medium text-[#3a2218]">{profile.institution_name}</p>
                       {profile.institution_location && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-[#80685b]">
                           {profile.institution_location}
                         </p>
                       )}
                       {profile.institution_verification === 'approved' && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
-                          Verified Institution
+                        <span className="inline-flex items-center rounded-full bg-[#d1fae5] px-3 py-1 text-xs font-medium text-[#065f46] mt-1">
+                          ✓ Verified Institution
                         </span>
                       )}
                     </div>
@@ -349,29 +344,29 @@ export default function DoctorProfilePage() {
             )}
 
             {/* Recent Reviews */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <div className="rounded-3xl border border-[#e6d8ce] bg-white p-6 shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
+              <h2 className="text-xl font-semibold text-[#3a2218] mb-4">
                 Recent Reviews
               </h2>
 
               {profile.recent_reviews && profile.recent_reviews.length > 0 ? (
                 <div className="space-y-4">
                   {profile.recent_reviews.map((review) => (
-                    <div key={review.id} className="border-b pb-4 last:border-b-0">
+                    <div key={review.id} className="border-b border-[#e6d8ce] pb-4 last:border-b-0">
                       <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                        <div className="w-10 h-10 rounded-full bg-[#f9f0e6] flex items-center justify-center text-[#6a4a3a] font-semibold">
                           {review.patient_username[0].toUpperCase()}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <p className="font-medium">{review.patient_username}</p>
-                            <p className="text-sm text-gray-500">
-                              {new Date(review.created_at).toLocaleDateString()}
+                            <p className="font-medium text-[#3a2218]">{review.patient_username}</p>
+                            <p className="text-sm text-[#80685b]">
+                              {new Date(review.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                             </p>
                           </div>
                           {renderStars(review.rating)}
                           {review.comment && (
-                            <p className="text-gray-700 mt-2">{review.comment}</p>
+                            <p className="text-[#6a4a3a] mt-2">{review.comment}</p>
                           )}
                         </div>
                       </div>
@@ -379,7 +374,7 @@ export default function DoctorProfilePage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No reviews yet</p>
+                <p className="text-[#80685b]">No reviews yet</p>
               )}
             </div>
           </div>
@@ -387,16 +382,16 @@ export default function DoctorProfilePage() {
           {/* Right Column - Stats */}
           <div className="space-y-6">
             {/* Rating Stats */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="rounded-3xl border border-[#e6d8ce] bg-white p-6 shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
+              <h3 className="text-lg font-semibold text-[#3a2218] mb-4">
                 Rating Overview
               </h3>
               <div className="text-center mb-4">
-                <div className="text-5xl font-bold text-blue-600">
+                <div className="text-5xl font-bold text-[#6a4a3a]">
                   {profile.average_rating.toFixed(1)}
                 </div>
                 {renderStars(Math.round(profile.average_rating))}
-                <p className="text-sm text-gray-600 mt-2">
+                <p className="text-sm text-[#80685b] mt-2">
                   Based on {profile.total_reviews} reviews
                 </p>
               </div>
@@ -412,14 +407,14 @@ export default function DoctorProfilePage() {
 
                     return (
                       <div key={star} className="flex items-center gap-2">
-                        <span className="text-sm w-8">{star} star</span>
-                        <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <span className="text-sm text-[#6a4a3a] w-8">{star}★</span>
+                        <div className="flex-1 h-2 bg-[#f0e5d8] rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-yellow-400"
+                            className="h-full bg-[#d6b28f]"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
-                        <span className="text-sm text-gray-600 w-8">{count}</span>
+                        <span className="text-sm text-[#80685b] w-8">{count}</span>
                       </div>
                     );
                   })}
@@ -428,32 +423,31 @@ export default function DoctorProfilePage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="rounded-3xl border border-[#e6d8ce] bg-white p-6 shadow-[0_30px_80px_-60px_rgba(58,34,24,0.45)]">
+              <h3 className="text-lg font-semibold text-[#3a2218] mb-4">
                 Quick Stats
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Total Reviews</span>
-                  <span className="font-semibold">{profile.total_reviews}</span>
+                  <span className="text-[#6a4a3a]">Total Reviews</span>
+                  <span className="font-semibold text-[#3a2218]">{profile.total_reviews}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Average Rating</span>
-                  <span className="font-semibold">
+                  <span className="text-[#6a4a3a]">Average Rating</span>
+                  <span className="font-semibold text-[#3a2218]">
                     {profile.average_rating.toFixed(1)} / 5.0
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Experience</span>
-                  <span className="font-semibold">
+                  <span className="text-[#6a4a3a]">Experience</span>
+                  <span className="font-semibold text-[#3a2218]">
                     {profile.years_of_experience} years
                   </span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
-    </div>
+    </DashboardShell>
   );
 }

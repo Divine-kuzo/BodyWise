@@ -16,8 +16,8 @@ export function Navbar() {
           BodyWise Africa
         </Link>
         <div className="flex items-center gap-3 lg:hidden">
-          <Link href="/join" className="text-sm font-semibold text-[#6a4a3a]">
-            Menu
+          <Link href="/signup" className="text-sm font-semibold text-[#6a4a3a]">
+            Sign Up
           </Link>
         </div>
         <nav className="hidden items-center gap-8 text-[#80685b] lg:flex">
@@ -38,7 +38,7 @@ export function Navbar() {
           >
             Login
           </Link>
-          <Link href="/join" className={buttonVariants({ variant: "secondary" })}>
+          <Link href="/signup" className={buttonVariants({ variant: "secondary" })}>
             Get Started
           </Link>
         </div>
